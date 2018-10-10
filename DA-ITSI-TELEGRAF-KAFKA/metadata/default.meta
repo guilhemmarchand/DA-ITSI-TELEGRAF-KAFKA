@@ -1,0 +1,18 @@
+[]
+access = read : [ * ], write : [ admin ]
+export = system
+
+[panels]
+export = none
+
+[itsi_kpi_base_search]
+access = read : [ * ], write : [ admin, itoa_admin ]
+
+[itsi_kpi_template]
+access = read : [ * ], write : [ admin, itoa_admin ]
+
+[itsi_module_settings]
+access = read : [ * ], write : [ admin, itoa_admin ]
+
+[itsi_service_template]
+access = read : [ * ], write : [ admin, itoa_admin ]
