@@ -361,23 +361,6 @@
             </chart>
         </panel>
         <panel>
-            <chart>
-                <title>Kbytes-consumed-rate (from bytes-consumed-rate)</title>
-                <search depends="$chart2$">
-                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_kafka-monitor.bytes-consumed-rate" jolokia_agent_url=$jolokia_agent_url$ span=1s
-| eval value=(value/1024)
-| timechart `telegraf_kafka_span` avg(value) as Kbytes-consumed-rate</query>
-                    <earliest>$earliest$</earliest>
-                    <latest>$latest$</latest>
-                </search>
-                <option name="charting.chart">line</option>
-                <option name="charting.axisTitleX.visibility">collapsed</option>
-                <option name="charting.axisTitleY.visibility">collapsed</option>
-                <option name="charting.chart.nullValueMode">gaps</option>
-                <option name="charting.chart.showDataLabels">none</option>
-                <option name="charting.legend.placement">none</option>
-                <option name="charting.drilldown">all</option>
-            </chart>
         </panel>
     </row>
 
