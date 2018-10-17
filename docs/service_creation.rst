@@ -41,12 +41,12 @@ Monitoring Kafka brokers
 
 * Configure / Service / Create new service / Kafka brokers monitoring
 
-.. image:: img/service_zookeeper_pic1.png
-   :alt: service_zookeeper_pic1.png
+.. image:: img/service_kafka_broker_pic1.png
+   :alt: service_kafka_broker_pic1.png
    :align: center
 
-.. image:: img/service_zookeeper_pic2.png
-   :alt: service_zookeeper_pic2.png
+.. image:: img/service_kafka_broker_pic2.png
+   :alt: service_kafka_broker_pic2.png
    :align: center
 
 Monitoring Kafka topics
@@ -56,12 +56,12 @@ Monitoring Kafka topics
 
 * Configure / Service / Create new service / ZKafka topic monitoring
 
-.. image:: img/service_zookeeper_pic1.png
-   :alt: service_zookeeper_pic1.png
+.. image:: img/service_kafka_topic_pic1.png
+   :alt: service_kafka_topic_pic1.png
    :align: center
 
-.. image:: img/service_zookeeper_pic2.png
-   :alt: service_zookeeper_pic2.png
+.. image:: img/service_kafka_topic_pic2.png
+   :alt: service_kafka_topic_pic2.png
    :align: center
 
 
@@ -72,18 +72,10 @@ End to end monitoring with LinkedIn Kafka monitor
 
 * Configure / Service / Create new service / Kafka LinkedIn monitor
 
-.. image:: img/service_zookeeper_pic1.png
-   :alt: service_zookeeper_pic1.png
+.. image:: img/service_kafka_monitor_pic1.png
+   :alt: service_kafka_monitor_pic1.png
    :align: center
 
-.. image:: img/service_zookeeper_pic2.png
-   :alt: service_zookeeper_pic2.png
+.. image:: img/service_kafka_monitor_pic2.png
+   :alt: service_kafka_monitor_pic2.png
    :align: center
-
-
-
-
-
-
-
-
