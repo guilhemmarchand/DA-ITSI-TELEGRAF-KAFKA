@@ -1,50 +1,55 @@
 Services creation
 #################
 
-**The ITSI module for Telegraf OS provides builtin services templates, relying on several base KPIs retrieving data from the metric store.**
+**The ITSI module for Telegraf Kafka smart monitoring provides builtin services templates, relying on several base KPIs retrieving data from the metric store.**
 
-At the moment, the following templates are provides:
+* **DA-ITSI-TELEGRAF-KAFKA-Zookeeper_monitoring**: provides insight monitoring for Zookeeper servers
 
-* Linux OS
-* Windows OS
+* **DA-ITSI-TELEGRAF-KAFKA-Kafka_brokers_cluster**: provides insight monitoring for the Kafka broker infrastructure
 
-Creating a new service
-======================
+* **DA-ITSI-TELEGRAF-KAFKA-Kafka_LinkedIn_monitor**: provides insight monitoring for the LinkedIn Kafka monitor, end to end monitoring for your Kafka deployment
 
-**Creating a new service and importing the KPIs definition is very easy:**
+* **DA-ITSI-TELEGRAF-KAFKA-Kafka_topic_monitoring**: provides insight momitoring for one or more Kafka topics
 
-- Configure / Services / New Service / New Service
+**As a general practice, if you first goal is designing the IT infrastrucure in ITSI, a good generique recommendation is to create a main service container for your Kafka infrastrastruce.**
 
-**Then fill the required information, select the option "Add prebuilt KPIs from modules", and depending on your needs:**
+**As such, every service that will design will be linked to the main service. (the main server depends on them)**
 
-* Telegraf OS Monitoring (Linux)
-* Telegraf OS Monitoring (Windows)
-
-.. image:: img/service_creation1.png
-   :alt: service_creation1.png
+.. image:: img/itsi_dep.png
+   :alt: itsi_dep.png
    :align: center
 
-**Once the service is created, achieve any modification you need such as the hosts to be matched, customize threshold values if required, and finally activate your service.**
+Monitoring Zookeeper servers
+============================
 
-.. image:: img/service_creation2.png
-   :alt: service_creation2.png
+**To monitor your Zookeeper servers, create a new service using the Zookeeper template service and select the proper filters for your entities:**
+
+* Configure / Service / Create new service / Zookeeper monitoring
+
+.. image:: img/service_zookeeper_pic1.png
+   :alt: service_zookeeper_pic1.png
    :align: center
 
-**After the service was created, ITSI will start to generate metrics and you service will be visible in the Service Analyser:**
-
-.. image:: img/service_creation3.png
-   :alt: service_creation3.png
+.. image:: img/service_zookeeper_pic2.png
+   :alt: service_zookeeper_pic2.png
    :align: center
 
-**Developing the entities part of the service provides access to the entity health view:**
+Monitoring Kafka brokers
+========================
 
-.. image:: img/service_creation4.png
-   :alt: service_creation4.png
-   :align: center
 
-**Where you can access to the Telegraf OS health view:**
+Monitoring Kafka topics
+=======================
 
-.. image:: img/main_linux.png
-   :alt: main_linux.png
-   :align: center
+
+End to end monitoring with LinkedIn Kafka monitor
+=================================================
+
+
+
+
+
+
+
+
 
