@@ -22,7 +22,7 @@ Services creation
 Monitoring Zookeeper servers
 ============================
 
-**To monitor your Zookeeper servers, create a new service using the Zookeeper template service and select the proper filters for your entities:**
+**To monitor your Zookeeper servers, create a new service using the "Zookeeper monitoring" template service and select the proper filters for your entities:**
 
 * Configure / Service / Create new service / Zookeeper monitoring
 
@@ -37,14 +37,48 @@ Monitoring Zookeeper servers
 Monitoring Kafka brokers
 ========================
 
+**To monitor your Zookeeper servers, create a new service using the "Kafka brokers monitoring" template service and select the proper filters for your entities:**
+
+* Configure / Service / Create new service / Kafka brokers monitoring
+
+.. image:: img/service_zookeeper_pic1.png
+   :alt: service_zookeeper_pic1.png
+   :align: center
+
+.. image:: img/service_zookeeper_pic2.png
+   :alt: service_zookeeper_pic2.png
+   :align: center
 
 Monitoring Kafka topics
 =======================
+
+**To monitor one or more Kafka topics, create a new service using the "Kafka topic monitoring" template service and select the proper filters for your entities corresponding to your topics:**
+
+* Configure / Service / Create new service / ZKafka topic monitoring
+
+.. image:: img/service_zookeeper_pic1.png
+   :alt: service_zookeeper_pic1.png
+   :align: center
+
+.. image:: img/service_zookeeper_pic2.png
+   :alt: service_zookeeper_pic2.png
+   :align: center
 
 
 End to end monitoring with LinkedIn Kafka monitor
 =================================================
 
+**To monitor your Kafka deployment using the LinkedIn Kafka monitor, create a new service using the "Kafka LinkedIn monitor" template service and select the proper filters for your entities:**
+
+* Configure / Service / Create new service / Kafka LinkedIn monitor
+
+.. image:: img/service_zookeeper_pic1.png
+   :alt: service_zookeeper_pic1.png
+   :align: center
+
+.. image:: img/service_zookeeper_pic2.png
+   :alt: service_zookeeper_pic2.png
+   :align: center
 
 
 
