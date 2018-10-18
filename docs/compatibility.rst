@@ -4,7 +4,7 @@ Compatibility
 Splunk compatibility
 ####################
 
-All the metrics are ingested into the high performance Splunk metric store, Splunk 7.0.x or or higher is required.
+All the metrics are ingested into the high performance Splunk metric store, Splunk 7.0.x or higher is required.
 
 ITSI compatibility
 ##################
