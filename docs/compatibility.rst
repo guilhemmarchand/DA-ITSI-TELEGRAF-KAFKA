@@ -23,4 +23,4 @@ For more information:
 Containers compatibility
 ########################
 
-If you are running Kafka in containers, you came at the right place, all of the components can natively run in docker.
+If you are running Kafka in containers, you are at the right place, all of the components can natively run in docker.
