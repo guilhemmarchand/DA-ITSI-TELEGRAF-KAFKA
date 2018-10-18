@@ -40,6 +40,7 @@ Deployment and configuration:
 
    deployment
    kafka_monitoring
+   docker_testing
    entities
    service_creation
    health_view
