@@ -1,4 +1,4 @@
-<form stylesheet="DA-ITSI-TELEGRAF-KAFKA:common.css" hideEdit="false" isVisible="False">
+<form stylesheet="DA-ITSI-TELEGRAF-KAFKA:common.css" hideEdit="True" isVisible="False">
     <label>Kafka Connect - Entity health view</label>
 
     <search id="connect_state_summary">
