@@ -10,17 +10,21 @@ Entities automatic import
 
 **In a nutshell, the following reports are automatically scheduled:**
 
-+------------------------------+-----------------------------------------------------------------+
-| Purpose                      | Report                                                          |
-+==============================+=================================================================+
-| Zookeeper servers detection  | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper               |
-+------------------------------+-----------------------------------------------------------------+
-| Kafka brokers detection      | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_brokers           |
-+------------------------------+-----------------------------------------------------------------+
-| Kafka topics detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_topics            |
-+------------------------------+-----------------------------------------------------------------+
-| Kafka monitors detection     | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_linkedin_kafka_monitors |
-+------------------------------+-----------------------------------------------------------------+
++-------------------------------+-----------------------------------------------------------------+
+| Purpose                       | Report                                                          |
++===============================+=================================================================+
+| Zookeeper servers detection   | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper               |
++-------------------------------+-----------------------------------------------------------------+
+| Kafka brokers detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_brokers           |
++-------------------------------+-----------------------------------------------------------------+
+| Kafka topics detection        | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_topics            |
++-------------------------------+-----------------------------------------------------------------+
+| Kafka connect detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect           |
++-------------------------------+-----------------------------------------------------------------+
+| Kafka connect tasks detection | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect_tasks     |
++-------------------------------+-----------------------------------------------------------------+
+| Kafka monitors detection      | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_linkedin_kafka_monitors |
++-------------------------------+-----------------------------------------------------------------+
 
 **When entities are discovered, entities will be added automatically using the itsi_role information field, with specific per technology aliases fields**
 
@@ -41,17 +45,31 @@ Zookeeper server detection
    :align: center
 
 Kafka brokers detection
---------------------------
+-----------------------
 
 .. image:: img/entities_kafka_brokers_detection.png
    :alt: entities_kafka_brokers_detection.png
    :align: center
 
 Kafka topics detection
---------------------------
+----------------------
 
 .. image:: img/entities_kafka_topics_detection.png
    :alt: entities_kafka_topics_detection.png
+   :align: center
+
+Kafka connect detection
+-----------------------
+
+.. image:: img/entities_kafka_connect_detection.png
+   :alt: entities_kafka_connect_detection.png
+   :align: center
+
+Kafka connect tasks detection
+-----------------------------
+
+.. image:: img/entities_kafka_connect_tasks_detection.png
+   :alt: entities_kafka_connect_tasks_detection.png
    :align: center
 
 Zookeeper server detection
