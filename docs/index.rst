@@ -11,7 +11,11 @@ The ITSI module for Telegraf Kafka monitoring provides smart insight monitoring 
 The best components are leveraged together to bring the power of a solution with no other equivalent on the market.
 
 .. image:: img/glass_table.png
-   :alt: screen001.png
+   :alt: glass_table.png
+   :align: center
+
+.. image:: img/main1.png
+   :alt: main1.png
    :align: center
 
 The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Kafka topics, Kafka Connect and end to end monitoring with the LinkedIn Kafka monitor.
