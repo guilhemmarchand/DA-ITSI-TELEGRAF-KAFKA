@@ -346,7 +346,9 @@ Full telegraf.conf example
 Kafka connect monitoring
 ========================
 
-**Metrics collection with Jolokia is identical to the Kafka brokers, only the JMX beans to be collected differ, bellow a full telegraf.conf example:**::
+**Metrics collection with Jolokia is identical to the Kafka brokers, only the JMX beans to be collected differ.**
+
+*bellow a full telegraf.conf example:*::
 
    [agent]
      interval = "10s"
