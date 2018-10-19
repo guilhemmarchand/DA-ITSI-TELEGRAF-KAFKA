@@ -11,7 +11,9 @@ Services creation
 
 * **DA-ITSI-TELEGRAF-KAFKA-Kafka_topic_monitoring**: provides insight momitoring for one or more Kafka topics
 
-**As a general practice, if you first goal is designing the IT infrastrucure in ITSI, a good generique recommendation is to create a main service container for your Kafka infrastrastruce.**
+* **DA-ITSI-TELEGRAF-KAFKA-Kafka_connect**: provides insight monitoring for the Kafka connect infrastructure
+
+**As a general practice, if you first goal is designing the IT infrastructure in ITSI, a good generic recommendation is to create a main service container for your Kafka infrastructure.**
 
 **As such, every service that will design will be linked to the main service. (the main server depends on them)**
 
@@ -54,7 +56,7 @@ Monitoring Kafka topics
 
 **To monitor one or more Kafka topics, create a new service using the "Kafka topic monitoring" template service and select the proper filters for your entities corresponding to your topics:**
 
-* Configure / Service / Create new service / ZKafka topic monitoring
+* Configure / Service / Create new service / Kafka topic monitoring
 
 .. image:: img/service_kafka_topic_pic1.png
    :alt: service_kafka_topic_pic1.png
@@ -64,6 +66,20 @@ Monitoring Kafka topics
    :alt: service_kafka_topic_pic2.png
    :align: center
 
+Monitoring Kafka Connect
+========================
+
+**To monitor Kafka Connect, create a new service using the "Kafka connect monitoring" template service and select the proper filters for your entities:**
+
+* Configure / Service / Create new service / Kafka connect monitoring
+
+.. image:: img/service_kafka_connect_pic1.png
+   :alt: service_kafka_connect_pic1.png
+   :align: center
+
+.. image:: img/service_kafka_connect_pic2.png
+   :alt: service_kafka_connect_pic2.png
+   :align: center
 
 End to end monitoring with LinkedIn Kafka monitor
 =================================================
