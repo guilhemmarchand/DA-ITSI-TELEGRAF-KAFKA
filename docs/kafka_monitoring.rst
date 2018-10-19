@@ -91,12 +91,6 @@ The Zookeeper monitoring is very simple and achieved by Telegraf and the Zookeep
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=zookeeper.*
 
-**Running the collector as a docker container:**
-
-It is very easy, and makes lots of sense, to run the collector in a docker container, consult my repository of YAML example:
-
-- <URL AWAITING>
-
 Kafka brokers monitoring with Jolokia
 =====================================
 
