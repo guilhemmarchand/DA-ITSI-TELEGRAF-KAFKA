@@ -15,7 +15,7 @@ Services creation
 
 **As a general practice, if you first goal is designing the IT infrastructure in ITSI, a good generic recommendation is to create a main service container for your Kafka infrastructure.**
 
-**As such, every service that will design will be linked to the main service. (the main server depends on them)**
+**As such, every service that will be designed will be linked to the main service. (the main service depends on them)**
 
 .. image:: img/itsi_dep.png
    :alt: itsi_dep.png
