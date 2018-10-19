@@ -116,7 +116,7 @@ Which automatically starts Jolokia and allows it to listen to any incoming conne
 Collecting with Telegraf
 ------------------------
 
-In the same way than with Zookeeper, your Telegraf deployment relies your preferences, and the way you run Kafka. (containers opposed to dedicated machines)
+Depending on how you run Kafka and your architecture preferences, you may prefer to collect all the brokers metrics from one Telegraf collector, or installed locally on the Kafka brocker machine.
 
 **The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
 
