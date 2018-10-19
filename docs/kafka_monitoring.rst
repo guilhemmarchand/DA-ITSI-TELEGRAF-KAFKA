@@ -67,6 +67,9 @@ The recommendation is to rely either on Splunk HEC or TCP inputs to forward Tele
 Zookeeper monitoring
 ====================
 
+Collecting with Telegraf
+------------------------
+
 The Zookeeper monitoring is very simple and achieved by Telegraf and the Zookeeper input plugin.
 
 **The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Zookeeper servers from one source:**::
@@ -80,6 +83,34 @@ The Zookeeper monitoring is very simple and achieved by Telegraf and the Zookeep
     # zookeeper metrics
     [[inputs.zookeeper]]
       servers = ["localhost:12181"]
+
+Full telegraf.conf example
+--------------------------
+
+*The following telegraf.conf collects a cluster of 3 Zookeeper servers:*::
+
+   [agent]
+     interval = "10s"
+     flush_interval = "10s"
+     hostname = "$HOSTNAME"
+
+   # outputs
+   [[outputs.http]]
+      url = "https://splunk:8088/services/collector"
+      insecure_skip_verify = true
+      data_format = "splunkmetric"
+       ## Provides time, index, source overrides for the HEC
+      splunkmetric_hec_routing = true
+       ## Additional HTTP headers
+       [outputs.http.headers]
+      # Should be set manually to "application/json" for json data_format
+         Content-Type = "application/json"
+         Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
+         X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
+
+   # zookeeper metrics
+   [[inputs.zookeeper]]
+     servers = ["zookeeper-1:12181","zookeeper-2:22181","zookeeper-3:32181"]
 
 **Vizualizations of metrics within the Splunk metrics workspace application:**
 
