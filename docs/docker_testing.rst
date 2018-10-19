@@ -15,6 +15,7 @@ https://github.com/guilhemmarchand/kafka-docker-splunk
 - 1 x Splunk standalone server running in docker
 - 1 x LinkedIn Kafka monitor node
 - 1 x Telegraf collector container to collect metrics from Zookeeper, Kafka brokers
+- 1 x Telegraf collector container to collect metrics from Kafka Connect (including source and sink tasks)
 - 1 x Telegraf collector container to collect metrics from LinkedIn Kafka monitor
 
 **Start the template, have a very short coffee (approx. 30 sec), open Splunk, install the Metrics workspace app and observe the magic happening !**
