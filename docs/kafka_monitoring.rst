@@ -346,7 +346,44 @@ Full telegraf.conf example
 Kafka connect monitoring
 ========================
 
-**Metrics collection with Jolokia is identical to the Kafka brokers, only the JMX beans to be collected differ.**
+Deploying Jolokia
+-----------------
+
+**Jolokia is a very powerful JMX agent that can be attached to the existing JVM.**
+
+In the context of Kafka, once the agent jar file has been uploaded to the broker, the only thing required is adding the following settings in the JAVA startup command line of Kafka (KAFKA_OPTS):::
+
+    -javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0
+
+Which automatically starts Jolokia and allows it to listen to any incoming connection, more settings are available off course.
+
+**In a docker environment, you will rely on environment variables, example with an extract from a docker-compose configuration:**::
+
+    environment:
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18779,host=0.0.0.0"
+    command: "/usr/bin/connect-distributed /etc/kafka-connect/config/connect-distributed.properties-kafka-connect-1"
+
+Collecting with Telegraf
+------------------------
+
+In the same way than with Zookeeper, your Telegraf deployment relies your preferences, and the way you run Kafka. (containers opposed to dedicated machines)
+
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
+
+   # Kafka-connect JVM monitoring
+   [[inputs.jolokia2_agent]]
+     name_prefix = "kafka_connect."
+     urls = ["http://kafka-connect-1:18779/jolokia","http://kafka-connect-2:28779/jolokia","http://kafka-connect-3:38779/jolokia"]
+
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**::
+
+   # Kafka-connect JVM monitoring
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_"
+      urls = ["http://localhost:8778/jolokia"]
+
+Full telegraf.conf example
+--------------------------
 
 *bellow a full telegraf.conf example:*::
 
