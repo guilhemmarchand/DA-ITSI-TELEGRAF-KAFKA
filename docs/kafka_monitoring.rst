@@ -343,13 +343,7 @@ Kafka connect monitoring
 Deploying Jolokia
 -----------------
 
-**Jolokia is a very powerful JMX agent that can be attached to the existing JVM.**
-
-In the context of Kafka, once the agent jar file has been uploaded to the broker, the only thing required is adding the following settings in the JAVA startup command line of Kafka (KAFKA_OPTS):::
-
-    -javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0
-
-Which automatically starts Jolokia and allows it to listen to any incoming connection, more settings are available off course.
+**Deploying Jolokia for Kafka Connect nodes is identical to the Kafka brokers deployment.**
 
 **In a docker environment, you will rely on environment variables, example with an extract from a docker-compose configuration:**::
 
@@ -359,8 +353,6 @@ Which automatically starts Jolokia and allows it to listen to any incoming conne
 
 Collecting with Telegraf
 ------------------------
-
-In the same way than with Zookeeper, your Telegraf deployment relies your preferences, and the way you run Kafka. (containers opposed to dedicated machines)
 
 **The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
 
