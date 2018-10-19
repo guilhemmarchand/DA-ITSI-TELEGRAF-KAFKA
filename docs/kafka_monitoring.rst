@@ -346,7 +346,70 @@ Full telegraf.conf example
 Kafka connect monitoring
 ========================
 
-This feature is upcoming !
+**Metrics collection with Jolokia is identical to the Kafka brokers, only the JMX beans to be collected differ, bellow a full telegraf.conf example:**::
+
+   [agent]
+     interval = "10s"
+     flush_interval = "10s"
+     hostname = "$HOSTNAME"
+
+   # outputs
+   [[outputs.http]]
+      url = "https://splunk:8088/services/collector"
+      insecure_skip_verify = true
+      data_format = "splunkmetric"
+       ## Provides time, index, source overrides for the HEC
+      splunkmetric_hec_routing = true
+       ## Additional HTTP headers
+       [outputs.http.headers]
+      # Should be set manually to "application/json" for json data_format
+         Content-Type = "application/json"
+         Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
+         X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
+
+   # Kafka-connect JVM monitoring
+
+   [[inputs.jolokia2_agent]]
+     name_prefix = "kafka_connect."
+     urls = ["http://kafka-connect-1:18779/jolokia","http://kafka-connect-2:28779/jolokia","http://kafka-connect-3:38779/jolokia"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "worker"
+     mbean        = "kafka.connect:type=connect-worker-metrics"
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "worker"
+     mbean        = "kafka.connect:type=connect-worker-rebalance-metrics"
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "connector-task"
+     mbean        = "kafka.connect:type=connector-task-metrics,connector=*,task=*"
+     tag_keys = ["connector", "task"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "sink-task"
+     mbean        = "kafka.connect:type=sink-task-metrics,connector=*,task=*"
+     tag_keys = ["connector", "task"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "source-task"
+     mbean        = "kafka.connect:type=source-task-metrics,connector=*,task=*"
+     tag_keys = ["connector", "task"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "error-task"
+     mbean        = "kafka.connect:type=task-error-metrics,connector=*,task=*"
+     tag_keys = ["connector", "task"]
+
+**Vizualizations of metrics within the Splunk metrics workspace application:**
+
+.. image:: img/kafka_connect_metrics_workspace.png
+   :alt: kafka_kafka_connect_workspace.png
+   :align: center
+
+**Using mcatalog search command to verify data availability:**::
+
+    | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_connect.*
 
 Kafka LinkedIn monitor - end to end monitoring
 ==============================================
