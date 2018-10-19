@@ -125,7 +125,7 @@ Depending on how you run Kafka and your architecture preferences, you may prefer
       name_prefix = "kafka_"
       urls = ["http://kafka-1:18778/jolokia","http://kafka-2:28778/jolokia","http://kafka-3:38778/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost assuming Telegraf is running on the same machine:**::
 
     # Kafka JVM monitoring
     [[inputs.jolokia2_agent]]
