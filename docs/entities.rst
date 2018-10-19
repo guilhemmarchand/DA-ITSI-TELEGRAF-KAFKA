@@ -72,8 +72,8 @@ Kafka connect tasks detection
    :alt: entities_kafka_connect_tasks_detection.png
    :align: center
 
-Zookeeper server detection
---------------------------
+LinkedIn Kafka monitor nodes detection
+--------------------------------------
 
 .. image:: img/entities_kafka_kafka-monitor_detection.png
    :alt: entities_kafka_kafka-monitor_detection.png
