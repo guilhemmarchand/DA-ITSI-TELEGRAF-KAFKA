@@ -95,11 +95,6 @@
                         <unset token="chart3"></unset>
                         <unset token="chart4"></unset>
                         <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
                     </condition>
                     <condition value="chart2">
                         <set token="chart2">true</set>
@@ -107,11 +102,6 @@
                         <unset token="chart3"></unset>
                         <unset token="chart4"></unset>
                         <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
                     </condition>
                     <condition value="chart3">
                         <set token="chart3">true</set>
@@ -119,11 +109,6 @@
                         <unset token="chart2"></unset>
                         <unset token="chart4"></unset>
                         <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
                     </condition>
                     <condition value="chart4">
                         <set token="chart4">true</set>
@@ -131,11 +116,6 @@
                         <unset token="chart2"></unset>
                         <unset token="chart3"></unset>
                         <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
                     </condition>
                     <condition value="chart5">
                         <set token="chart5">true</set>
@@ -143,71 +123,6 @@
                         <unset token="chart2"></unset>
                         <unset token="chart3"></unset>
                         <unset token="chart4"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
-                    </condition>
-                    <condition value="chart6">
-                        <set token="chart6">true</set>
-                        <unset token="chart1"></unset>
-                        <unset token="chart2"></unset>
-                        <unset token="chart3"></unset>
-                        <unset token="chart4"></unset>
-                        <unset token="chart5"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
-                    </condition>
-                    <condition value="chart7">
-                        <set token="chart7">true</set>
-                        <unset token="chart1"></unset>
-                        <unset token="chart2"></unset>
-                        <unset token="chart3"></unset>
-                        <unset token="chart4"></unset>
-                        <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
-                    </condition>
-                    <condition value="chart8">
-                        <set token="chart8">true</set>
-                        <unset token="chart1"></unset>
-                        <unset token="chart2"></unset>
-                        <unset token="chart3"></unset>
-                        <unset token="chart4"></unset>
-                        <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart9"></unset>
-                        <unset token="chart10"></unset>
-                    </condition>
-                    <condition value="chart9">
-                        <set token="chart9">true</set>
-                        <unset token="chart1"></unset>
-                        <unset token="chart2"></unset>
-                        <unset token="chart3"></unset>
-                        <unset token="chart4"></unset>
-                        <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart10"></unset>
-                    </condition>
-                    <condition value="chart10">
-                        <set token="chart10">true</set>
-                        <unset token="chart1"></unset>
-                        <unset token="chart2"></unset>
-                        <unset token="chart3"></unset>
-                        <unset token="chart4"></unset>
-                        <unset token="chart5"></unset>
-                        <unset token="chart6"></unset>
-                        <unset token="chart7"></unset>
-                        <unset token="chart8"></unset>
-                        <unset token="chart9"></unset>
                     </condition>
                 </change>
             </input>
@@ -756,7 +671,7 @@
             </chart>
         </panel>
         <panel>
-            <title>The number of failed writes to the dead letter queue</title>
+            <title>The number of attempted writes to the dead letter queue</title>
             <chart>
                 <search depends="$chart5$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.deadletterqueue-produce-requests" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
@@ -778,7 +693,7 @@
 
     <row depends="$chart5$">
         <panel>
-            <title>The number of attempted writes to the dead letter queue</title>
+            <title>The number of failed writes to the dead letter queue</title>
             <chart>
                 <search depends="$chart5$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.deadletterqueue-produce-failures" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
