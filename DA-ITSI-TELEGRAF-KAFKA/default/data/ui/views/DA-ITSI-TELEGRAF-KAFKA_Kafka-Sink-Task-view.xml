@@ -368,11 +368,11 @@
         </panel>
     </row>
 
-    <row depends="$chart2$">
+    <row depends="$chart3$">
         <panel>
             <title>The number of errors that were logged</title>
             <chart>
-                <search depends="$chart2$">
+                <search depends="$chart3$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-errors-logged" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
@@ -391,7 +391,7 @@
         <panel>
             <title>The number of operations retried</title>
             <chart>
-                <search depends="$chart2$">
+                <search depends="$chart3$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-retries" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
@@ -410,7 +410,7 @@
         <panel>
             <title>The number of records skipped due to errors</title>
             <chart>
-                <search depends="$chart2$">
+                <search depends="$chart3$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-records-skipped" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
@@ -513,7 +513,5 @@
         <panel>
         </panel>
     </row>
-
-
 
 </form>
