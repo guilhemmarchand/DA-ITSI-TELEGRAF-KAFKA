@@ -4,7 +4,8 @@
     <search id="sink_task_state_summary">
         <query>| mstats latest(_value) as value WHERE `telegraf_kafka_index`  metric_name="kafka_connect.connector-task.running-ratio" OR metric_name="kafka_connect.connector-task.pause-ratio" OR metric_name="kafka_connect.error-task.total-errors-logged" OR metric_name="kafka_connect.error-task.total-retries" connector=$connector$ by metric_name
 | eval {metric_name}=value
-| stats first(kafka_connect.*) as "*"</query>
+| stats first(kafka_connect.*) as "*"
+| eval connector-task.running-ratio=round('connector-task.running-ratio'*100, 2), connector-task.pause-ratio=round('connector-task.pause-ratio'*100, 2)</query>
         <earliest>-90s</earliest>
         <latest>now</latest>
         <refresh>30s</refresh>
@@ -26,7 +27,7 @@
                 <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="rangeColors">["0xf1813f","0x53a051"]</option>
-                <option name="rangeValues">[1]</option>
+                <option name="rangeValues">[99.9]</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="refresh.display">progressbar</option>
                 <option name="underLabel">SINK TASK RUNNING RATIO</option>
