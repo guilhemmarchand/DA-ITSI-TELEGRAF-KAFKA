@@ -253,7 +253,7 @@
             <title>Avg/sec records produced/polled (before transformation)</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-poll-rate" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-poll-rate" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -272,7 +272,7 @@
             <title>Avg time/ms taken to poll for a batch of source records</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-avg-time-ms" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-avg-time-ms" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -291,7 +291,7 @@
             <title>Max time/ms taken by this task to poll for a batch of source records</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-max-time-ms" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-max-time-ms" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -313,7 +313,7 @@
             <title>Avg/sec no records output from transformations written to Kafka, after transformations</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-write-rate" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-write-rate" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -332,7 +332,7 @@
             <title>Avg no records that have been produced but not yet completely written to Kafka</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-avg" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-avg" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -351,7 +351,7 @@
             <title>Max no records that have been produced but not yet completely written to Kafka</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-max" jolokia_agent_url=$jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-max" connector=$connector$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
