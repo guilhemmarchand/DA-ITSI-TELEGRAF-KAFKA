@@ -18,6 +18,10 @@ https://github.com/guilhemmarchand/kafka-docker-splunk
 - 1 x Telegraf collector container to collect metrics from Kafka Connect (including source and sink tasks)
 - 1 x Telegraf collector container to collect metrics from LinkedIn Kafka monitor
 
+.. image:: img/draw.io/docker_template.png
+   :alt: docker_template
+   :align: center
+
 **Start the template, have a very short coffee (approx. 30 sec), open Splunk, install the Metrics workspace app and observe the magic happening !**
 
 .. image:: img/docker-templates.png
