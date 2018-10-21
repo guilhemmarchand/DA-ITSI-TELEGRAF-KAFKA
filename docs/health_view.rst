@@ -3,6 +3,20 @@ ITSI Entities dashboard (health views)
 
 **Through builtin ITSI deepdive links, you can automatically and easily access to an efficient dashboard that provides insight analytic for the component.**
 
+**Accessing entities health views is a native ITSI feature, either by:**
+
+- **Entities lister** (Configure / Entities)
+
+.. image:: img/entities_lister.png
+   :alt: entities_lister.png
+   :align: center
+
+- **deepdive link**
+
+.. image:: img/deepdive_link.png
+   :alt: deepdive_link.png
+   :align: center
+
 Zookeeper dashboard view
 ########################
 
