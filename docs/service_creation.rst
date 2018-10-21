@@ -3,15 +3,19 @@ Services creation
 
 **The ITSI module for Telegraf Kafka smart monitoring provides builtin services templates, relying on several base KPIs retrieving data from the metric store.**
 
-* **DA-ITSI-TELEGRAF-KAFKA-Zookeeper_monitoring**: provides insight monitoring for Zookeeper servers
+* **Zookeeper monitoring**: provides insight monitoring for Zookeeper servers
 
-* **DA-ITSI-TELEGRAF-KAFKA-Kafka_brokers_cluster**: provides insight monitoring for the Kafka broker infrastructure
+* **Kafka brokers monitoring**: provides insight monitoring for the Kafka broker infrastructure
 
-* **DA-ITSI-TELEGRAF-KAFKA-Kafka_LinkedIn_monitor**: provides insight monitoring for the LinkedIn Kafka monitor, end to end monitoring for your Kafka deployment
+* **Kafka LinkedIn monitor**: provides insight monitoring for the LinkedIn Kafka monitor, end to end monitoring for your Kafka deployment
 
-* **DA-ITSI-TELEGRAF-KAFKA-Kafka_topic_monitoring**: provides insight momitoring for one or more Kafka topics
+* **Kafka topic monitoring**: provides insight momitoring for one or more Kafka topics
 
-* **DA-ITSI-TELEGRAF-KAFKA-Kafka_connect**: provides insight monitoring for the Kafka connect infrastructure
+* **Kafka connect monitoring**: provides insight monitoring for the Kafka connect infrastructure
+
+* **Kafka sink task monitoring**: provides insight monitoring for Kafka connect sink tasks
+
+* **Kafka source task monitoring**: provides insight monitoring for Kafka connect source tasks
 
 **As a general practice, if you first goal is designing the IT infrastructure in ITSI, a good generic recommendation is to create a main service container for your Kafka infrastructure.**
 
@@ -79,6 +83,32 @@ Monitoring Kafka Connect
 
 .. image:: img/service_kafka_connect_pic2.png
    :alt: service_kafka_connect_pic2.png
+   :align: center
+
+Monitoring Kafka Connect Sink taks
+==================================
+
+**To monitor one of more Kafka Connect Sink connectors, create a new service using the "Kafka sink task monitoring" template service and select the proper filters for your entities:**
+
+.. image:: img/service_kafka_sink_task_pic1.png
+   :alt: service_kafka_sink_task_pic1.png
+   :align: center
+
+.. image:: img/service_kafka_sink_task_pic2.png
+   :alt: service_kafka_sink_task_pic2.png
+   :align: center
+
+Monitoring Kafka Connect Source taks
+====================================
+
+**To monitor one of more Kafka Connect Source connectors, create a new service using the "Kafka source task monitoring" template service and select the proper filters for your entities:**
+
+.. image:: img/service_kafka_source_task_pic1.png
+   :alt: service_kafka_source_task_pic1.png
+   :align: center
+
+.. image:: img/service_kafka_source_task_pic2.png
+   :alt: service_kafka_source_task_pic2.png
    :align: center
 
 End to end monitoring with LinkedIn Kafka monitor

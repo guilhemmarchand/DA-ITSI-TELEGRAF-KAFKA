@@ -65,7 +65,7 @@ Kafka topic dashboard view
    :align: center
 
 Kafka connect dashboard view
-###########################
+############################
 
 .. image:: img/dashboard_kafka_connect_pic1.png
    :alt: dashboard_kafka_connect_pic1.png
@@ -85,6 +85,36 @@ Kafka connect dashboard view
 
 .. image:: img/dashboard_kafka_connect_pic5.png
    :alt: dashboard_kafka_connect_pic5.png
+   :align: center
+
+Kafka connect sink task dashboard view
+######################################
+
+.. image:: img/dashboard_kafka_connect_sink_pic1.png
+   :alt: dashboard_kafka_connect_sink_pic1.png
+   :align: center
+
+.. image:: img/dashboard_kafka_connect_sink_pic2.png
+   :alt: dashboard_kafka_connect_sink_pic2.png
+   :align: center
+
+.. image:: img/dashboard_kafka_connect_sink_pic3.png
+   :alt: dashboard_kafka_connect_sink_pic3.png
+   :align: center
+
+Kafka connect source task dashboard view
+########################################
+
+.. image:: img/dashboard_kafka_connect_source_pic1.png
+   :alt: dashboard_kafka_connect_source_pic1.png
+   :align: center
+
+.. image:: img/dashboard_kafka_connect_source_pic2.png
+   :alt: dashboard_kafka_connect_source_pic2.png
+   :align: center
+
+.. image:: img/dashboard_kafka_connect_source_pic3.png
+   :alt: dashboard_kafka_connect_source_pic3.png
    :align: center
 
 LinkedIn Kafka monitor view
