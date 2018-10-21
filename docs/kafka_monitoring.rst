@@ -593,3 +593,51 @@ As a builtin configuration, the kafka-monitor implements a jolokia agent, so col
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_kafka-monitor.*
 
+Operating System level metrics
+==============================
+
+**Monitoring the Operating System level metrics is fully part of the monitoring requirements of a Kafka infrastructure.**
+
+Bare metal servers and virtual machines
+---------------------------------------
+
+ITSI module for Telegraf Operating System
++++++++++++++++++++++++++++++++++++++++++
+
+**Telegraf has very powerful Operating System level metrics capabilities, checkout the ITSI module for Telegraf Operating System monitoring !**
+
+https://da-itsi-telegraf-os.readthedocs.io
+
+.. image:: img/itsi_module_telegraf.png
+   :alt: itsi_module_telegraf.png
+   :align: center
+
+ITSI module for metricator Nmon
++++++++++++++++++++++++++++++++
+
+**Another very powerful way of monitoring Operating System level metrics with a builtin ITSI module and the excellent nmon monitoring:**
+
+https://www.octamis.com/metricator-docs/itsi_module.html
+
+.. image:: img/itsi_module_metricator.png
+   :alt: itsi_module_metricator.pngg
+   :align: center
+
+ITSI module for OS
+++++++++++++++++++
+
+**Last option is using the builtin ITSI module for OS which relies on the TA-nix or TA-Windows:**
+
+http://docs.splunk.com/Documentation/ITSI/latest/IModules/AbouttheOperatingSystemModule
+
+Containers with Docker and container orchestrators
+--------------------------------------------------
+
+Telegraf docker monitoring
+++++++++++++++++++++++++++
+
+Telegraf has very powerful inputs for Docker and is natively compatible with a container orchestrator such as Kubernetes.
+
+Specially with Kubernetes, it is very easy to run a Telegraf container as a daemonset in Kubernetes and retrieve all the performance metrics of the containers.
+
+Watch out for an upcoming ITSI Module for Docker and ITSI Module for Kubernetes !
