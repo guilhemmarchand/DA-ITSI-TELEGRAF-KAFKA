@@ -158,9 +158,9 @@
             <title>Messages/sec</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.MessagesInPerSec.OneMinuteRate" topic=$topic$ span=10s by topic
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.MessagesInPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
 | eval value=round(value, 3)
-| timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by topic</query>
+| timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                 </search>
@@ -169,7 +169,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.chart.nullValueMode">gaps</option>
                 <option name="charting.chart.showDataLabels">none</option>
-                <option name="charting.legend.placement">none</option>
+                <option name="charting.legend.placement">top</option>
                 <option name="charting.drilldown">all</option>
             </chart>
         </panel>
@@ -180,9 +180,9 @@
             <title>Traffic Kbps/In</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesInPerSec.OneMinuteRate" topic=$topic$ span=10s by topic
+                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesInPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
 | eval value=round(value/1024, 3)
-| timechart `telegraf_kafka_span` avg(value) as "Avg" useother=false by topic</query>
+| timechart `telegraf_kafka_span` avg(value) as "Avg" useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                 </search>
@@ -191,7 +191,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.chart.nullValueMode">gaps</option>
                 <option name="charting.chart.showDataLabels">none</option>
-                <option name="charting.legend.placement">none</option>
+                <option name="charting.legend.placement">top</option>
                 <option name="charting.drilldown">all</option>
             </chart>
         </panel>
@@ -199,9 +199,9 @@
             <title>Traffic Kbps/Out</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesOutPerSec.OneMinuteRate" topic=$topic$ span=10s by topic
+                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesOutPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
 | eval value=round(value/1024, 3)
-| timechart `telegraf_kafka_span` avg(value) as "Avg" useother=false by topic</query>
+| timechart `telegraf_kafka_span` avg(value) as "Avg" useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                 </search>
@@ -210,7 +210,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.chart.nullValueMode">gaps</option>
                 <option name="charting.chart.showDataLabels">none</option>
-                <option name="charting.legend.placement">none</option>
+                <option name="charting.legend.placement">top</option>
                 <option name="charting.drilldown">all</option>
             </chart>
         </panel>
@@ -221,9 +221,9 @@
             <title>FailedProduceRequestsPerSec</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedProduceRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by topic
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedProduceRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
 | eval value=round(value, 3)
-| timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by topic</query>
+| timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                 </search>
@@ -232,7 +232,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.chart.nullValueMode">gaps</option>
                 <option name="charting.chart.showDataLabels">none</option>
-                <option name="charting.legend.placement">none</option>
+                <option name="charting.legend.placement">top</option>
                 <option name="charting.drilldown">all</option>
             </chart>
         </panel>
@@ -243,9 +243,9 @@
             <title>FailedFetchRequestsPerSec</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedFetchRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by topic
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedFetchRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
 | eval value=round(value, 3)
-| timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by topic</query>
+| timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                 </search>
@@ -254,7 +254,7 @@
                 <option name="charting.axisTitleY.visibility">collapsed</option>
                 <option name="charting.chart.nullValueMode">gaps</option>
                 <option name="charting.chart.showDataLabels">none</option>
-                <option name="charting.legend.placement">none</option>
+                <option name="charting.legend.placement">top</option>
                 <option name="charting.drilldown">all</option>
             </chart>
         </panel>
