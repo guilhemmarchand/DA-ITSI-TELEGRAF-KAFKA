@@ -5,7 +5,7 @@ Docker testing templates
 
 https://github.com/guilhemmarchand/kafka-docker-splunk
 
-**Using the docker templates allow you top create a full ready to be used Kafka environment with docker, just in 30 seconds.**
+**Using the docker templates allows you to create a full pre-configured Kafka environment with docker, just in 30 seconds.**
 
 *Example:*
 
