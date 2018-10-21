@@ -1,6 +1,75 @@
 Implementation
 ##############
 
+*Data collection diagram overview:*
+
+.. image:: img/draw.io/overview_diagram.png
+   :alt: overview_diagram
+   :align: center
+
+Splunk configuration
+====================
+
+Index definition
+----------------
+
+**The ITSI module relies by default on the creation of a metrics index called "telegraf_kafka":**
+
+*indexes.conf example with no Splunk volume:*::
+
+   [telegraf_kafka]
+   coldPath = $SPLUNK_DB/telegraf_kafka/colddb
+   datatype = metric
+   homePath = $SPLUNK_DB/telegraf_kafka/db
+   thawedPath = $SPLUNK_DB/telegraf_kafka/thaweddb
+
+*indexes.conf example with Splunk volumes:*::
+
+   [telegraf_kafka]
+   coldPath = volume:cold/telegraf_kafka/colddb
+   datatype = metric
+   homePath = volume:primary/telegraf_kafka/db
+   thawedPath = $SPLUNK_DB/telegraf_kafka/thaweddb
+
+In a Splunk distributed configuration (cluster of indexers), this configuration stands on the cluster master node.
+
+All Splunk searches included in the added refer to the utilisation of a macro called **"telegraf_kafka_index"** including in:
+
+* DA-ITSI-TELEGRAF-KAFKA/default/macros.conf
+
+If you wish to use a different index model, this macro shall be customized to override the default model, and no other modification will be required.
+
+HEC input ingestion and definition
+----------------------------------
+
+**The default recommended way of ingesting the Kafka metrics is using the HTTP Events Collector method which requires the creation of an HEC input.**
+
+*inputs.conf example:*::
+
+   [http://telegraf_kafka_monitoring]
+   disabled = 0
+   index = telegraf_kafka
+   token = 205d43f1-2a31-4e60-a8b3-327eda49944a
+
+If you create the HEC input via Splunk Web interface, it is not required to select an explicit value for source and sourcetype.
+
+The HEC input will be ideally relying on a load balancer to provides resiliency and load balancing across your HEC input nodes.
+
+Other ingesting methods
+-----------------------
+
+**There are other methods possible to ingest the Kafka metrics in Splunk:**
+
+* TCP input (graphite format with tags support)
+* KAFKA ingestion (Kafka destination from Telegraf in graphite format with tags support, and Splunk connect for Kafka)
+* File monitoring with standard Splunk input monitors (file output plugin from Telegraf)
+
+Notes: In the very specific context of monitoring Kafka, it is not a good design to use Kafka as the ingestion method since you will most likely never be able to know when an issue happens on Kafka.
+
+**These methods require the deployment of an additional Technology addon:** https://splunkbase.splunk.com/app/4193
+
+**These methods are heavily described here:** https://da-itsi-telegraf-os.readthedocs.io/en/latest/telegraf.html
+
 Telegraf installation and configuration
 =======================================
 
