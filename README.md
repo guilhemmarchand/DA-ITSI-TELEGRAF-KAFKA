@@ -10,4 +10,4 @@ The best components are leveraged together to bring the power of a solution with
 
 The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Kafka topics, Kafka Connect and end to end monitoring with the LinkedIn Kafka monitor.
 
-The documentation is available on-line at: https://da-itsi-telegraf-kafka.readthedocs.io/en/latest/index.html
+The documentation is available on-line at: https://da-itsi-telegraf-kafka.readthedocs.io
