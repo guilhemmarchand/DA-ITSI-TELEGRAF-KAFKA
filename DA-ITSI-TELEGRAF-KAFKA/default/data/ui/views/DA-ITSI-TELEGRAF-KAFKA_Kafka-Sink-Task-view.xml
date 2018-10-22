@@ -45,7 +45,7 @@
             <single>
                 <search base="sink_task_state_summary">
                     <query>fields connector-task.status | rename connector-task.status as integer_status
-| eval status=case(integer_status=1, "running", integer_status=2, "unassigned", integer_status=3, "failed", integer_status=4, "destroyed")
+| eval status=case(integer_status=0, "paused", integer_status=1, "running", integer_status=2, "unassigned", integer_status=3, "failed", integer_status=4, "destroyed")
 | rangemap field=integer_status low=1-1 high=2-4 default=severe | fields status, range</query>
                 </search>
                 <option name="colorBy">value</option>
