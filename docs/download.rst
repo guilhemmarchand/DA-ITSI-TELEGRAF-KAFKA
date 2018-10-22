@@ -9,7 +9,7 @@ ITSI Module for Telegraf Apache Kafka smart monitoring
 Splunk base
 -----------
 
-- <URL AWAITING>
+- https://splunkbase.splunk.com/app/4261
 
 GitHub
 ------
