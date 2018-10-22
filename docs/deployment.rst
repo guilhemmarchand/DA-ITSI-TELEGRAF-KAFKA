@@ -1,6 +1,21 @@
 Deployment & Upgrades
 #####################
 
+Deployment matrix
+=================
+
++----------------------+---------------------+
+| Splunk roles         | required            |
++======================+=====================+
+| ITSI Search head     |   yes               |
++----------------------+---------------------+
+| Indexer tiers        |   no                |
++----------------------+---------------------+
+
+If ITSI is running in Search Head Cluster (SHC), the ITSI module must be deployed by the SHC deployer.
+
+The deployment and configuration of the ITSI module requires the creation of a dedicated metric index (by default called **telegraf_kafka**), see the implementation section.
+
 Initial deployment
 ==================
 
