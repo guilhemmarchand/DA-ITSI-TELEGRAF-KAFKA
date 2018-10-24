@@ -5,7 +5,7 @@
         <query>| mstats latest(_value) as value WHERE `telegraf_kafka_index` metric_name="kafka_connect.worker.task-startup-failure-total" OR metric_name="kafka_connect.worker.connector-startup-failure-total" OR metric_name="kafka_connect.worker.time-since-last-rebalance-ms" OR metric_name="kafka_connect.worker.task-count" jolokia_agent_url=$jolokia_agent_url$ by metric_name
 | eval {metric_name}=value
 | stats first(kafka_connect.*) as "*"
-| eval duration=tostring('worker.time-since-last-rebalance-ms', "duration")
+| eval duration=tostring(round('worker.time-since-last-rebalance-ms'/1000, 0), "duration")
 | fields worker.connector-startup-failure-total, worker.task-startup-failure-total, worker.task-count, duration</query>
         <earliest>-90s</earliest>
         <latest>now</latest>
@@ -53,6 +53,7 @@
                 <search base="connect_state_summary">
                     <query>fields duration</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
@@ -67,6 +68,7 @@
                 <search base="connect_state_summary">
                     <query>fields worker.task-count</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>

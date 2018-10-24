@@ -82,6 +82,7 @@
                 <search base="topic_activity_summary">
                     <query>fields MessagesInPerSec</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
@@ -97,6 +98,7 @@
                 <search base="topic_activity_summary">
                     <query>fields KbytesInPerSec</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
@@ -112,6 +114,7 @@
                 <search base="topic_activity_summary">
                     <query>fields KbytesOutPerSec</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>

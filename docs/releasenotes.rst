@@ -1,6 +1,11 @@
 Release notes
 #############
 
+Version 1.0.2
+=============
+- fix: incorrect duration shown in Kafka Connect entity view
+- feature: minor improvements in UIs
+
 Version 1.0.1
 =============
 

@@ -83,6 +83,7 @@
                 <search base="broker_activity_summary">
                     <query>fields MessagesInPerSec</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
@@ -98,6 +99,7 @@
                 <search base="broker_activity_summary">
                     <query>fields KBytesInPerSec</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
@@ -113,6 +115,7 @@
                 <search base="broker_activity_summary">
                     <query>fields KBytesInPerSec</query>
                 </search>
+                <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="numberPrecision">0.00</option>
                 <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
