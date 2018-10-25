@@ -1,6 +1,11 @@
 Release notes
 #############
 
+Version 1.0.3
+=============
+- fix: missing entity filter in latency from Zookeeper view
+- fix: incorrect static filter in state from Sink task view
+
 Version 1.0.2
 =============
 - fix: incorrect duration shown in Kafka Connect entity view

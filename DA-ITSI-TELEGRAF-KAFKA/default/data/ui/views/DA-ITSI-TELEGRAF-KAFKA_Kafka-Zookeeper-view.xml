@@ -91,7 +91,7 @@
             <chart>
                 <title>Average latency</title>
                 <search>
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" BY server span=1s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" server=$server$ by server span=1s
 | timechart `telegraf_kafka_span` avg(_value) as "Avg"</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
