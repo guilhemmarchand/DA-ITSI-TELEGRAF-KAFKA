@@ -1,6 +1,10 @@
 Release notes
 #############
 
+Version 1.0.4
+=============
+- fix: typo on partitions in Kafka brokers view
+
 Version 1.0.3
 =============
 - fix: missing entity filter in latency from Zookeeper view

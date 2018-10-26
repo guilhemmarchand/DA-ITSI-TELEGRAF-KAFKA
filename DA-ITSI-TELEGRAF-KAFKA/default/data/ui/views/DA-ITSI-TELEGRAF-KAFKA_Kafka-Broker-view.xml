@@ -55,7 +55,7 @@
                 <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
                 <option name="rangeValues">[0]</option>
                 <option name="refresh.display">progressbar</option>
-                <option name="underLabel">OFFLINE PARITTIONS</option>
+                <option name="underLabel">OFFLINE PARTITIONS</option>
                 <option name="useColors">1</option>
             </single>
         </panel>
@@ -74,7 +74,7 @@
                 <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
                 <option name="rangeValues">[0]</option>
                 <option name="refresh.display">progressbar</option>
-                <option name="underLabel">UNDER-REPLICATED PARITTIONS</option>
+                <option name="underLabel">UNDER-REPLICATED PARTITIONS</option>
                 <option name="useColors">1</option>
             </single>
         </panel>
