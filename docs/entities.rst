@@ -25,6 +25,8 @@ Entities automatic import
 +-------------------------------+-----------------------------------------------------------------+
 | Kafka monitors detection      | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_linkedin_kafka_monitors |
 +-------------------------------+-----------------------------------------------------------------+
+| Confluent schema-registry     | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_schema-registry   |
++-------------------------------+-----------------------------------------------------------------+
 
 **When entities are discovered, entities will be added automatically using the itsi_role information field, with specific per technology aliases fields**
 
@@ -70,6 +72,13 @@ Kafka connect tasks detection
 
 .. image:: img/entities_kafka_connect_tasks_detection.png
    :alt: entities_kafka_connect_tasks_detection.png
+   :align: center
+
+Confluent schema-registry nodes detection
+-----------------------------------------
+
+.. image:: img/entities_schema_registry.png
+   :alt: entities_schema_registry.png
    :align: center
 
 LinkedIn Kafka monitor nodes detection

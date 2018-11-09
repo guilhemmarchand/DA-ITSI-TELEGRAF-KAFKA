@@ -608,6 +608,97 @@ As a builtin configuration, the kafka-monitor implements a jolokia agent, so col
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_kafka-monitor.*
 
+Confluent schema-registry
+=========================
+
+Deploying Jolokia
+-----------------
+
+**In a docker environment, you will rely on environment variables, example with an extract from a docker-compose configuration:**::
+
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper-1:12181,zookeeper-2:12181,zookeeper-3:12181
+      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+      SCHEMA_REGISTRY_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18783,host=0.0.0.0"
+
+Collecting with Telegraf
+------------------------
+
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
+
+   [[inputs.jolokia2_agent]]
+     name_prefix = "kafka_schema-registry."
+     urls = ["http://schema-registry:18783/jolokia"]
+
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**::
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "jetty-metrics"
+     mbean        = "kafka.schema.registry:type=jetty-metrics"
+     paths = ["connections-active", "connections-opened-rate", "connections-closed-rate"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "master-slave-role"
+     mbean        = "kafka.schema.registry:type=master-slave-role"
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "jersey-metrics"
+     mbean        = "kafka.schema.registry:type=jersey-metrics"
+
+Full telegraf.conf example
+--------------------------
+
+*bellow a full telegraf.conf example:*::
+
+   [agent]
+     interval = "10s"
+     flush_interval = "10s"
+     hostname = "$HOSTNAME"
+
+   # outputs
+   [[outputs.http]]
+      url = "https://splunk:8088/services/collector"
+      insecure_skip_verify = true
+      data_format = "splunkmetric"
+       ## Provides time, index, source overrides for the HEC
+      splunkmetric_hec_routing = true
+       ## Additional HTTP headers
+       [outputs.http.headers]
+      # Should be set manually to "application/json" for json data_format
+         Content-Type = "application/json"
+         Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
+         X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
+
+   # schema-registry JVM monitoring
+
+   [[inputs.jolokia2_agent]]
+     name_prefix = "kafka_schema-registry."
+     urls = ["http://schema-registry:18783/jolokia"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "jetty-metrics"
+     mbean        = "kafka.schema.registry:type=jetty-metrics"
+     paths = ["connections-active", "connections-opened-rate", "connections-closed-rate"]
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "master-slave-role"
+     mbean        = "kafka.schema.registry:type=master-slave-role"
+
+   [[inputs.jolokia2_agent.metric]]
+     name         = "jersey-metrics"
+     mbean        = "kafka.schema.registry:type=jersey-metrics"
+
+**Vizualizations of metrics within the Splunk metrics workspace application:**
+
+.. image:: img/confluent_schema-registry_metrics_workspace.png
+   :alt: confluent_schema-registry_metrics_workspace.png
+   :align: center
+
+**Using mcatalog search command to verify data availability:**::
+
+    | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_schema-registry.*
+
 Operating System level metrics
 ==============================
 

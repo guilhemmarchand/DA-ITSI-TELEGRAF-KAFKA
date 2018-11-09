@@ -21,8 +21,8 @@ About
 
 **The ITSI module provides a native and builtin integration with Splunk and ITSI:**
 
-- Builtin entities discovery for Zookeeper servers, Kafka brokers, Kafka connect nodes, Kafka connect source and sink tasks, Kafka-monitor, Kafka topics
-- Services templates and KPI base searches for Zookeeper, Kafka brokers, Kafka connect and source/sink tasks, Kafka LinkedIn monitor, Kafka topics
+- Builtin entities discovery for Zookeeper servers, Kafka brokers, Kafka connect nodes, Kafka connect source and sink tasks, Kafka-monitor, Kafka topics, Confluent schema-registry
+- Services templates and KPI base searches for Zookeeper, Kafka brokers, Kafka connect and source/sink tasks, Kafka LinkedIn monitor, Kafka topics, Confluent schema-registry
 - Rich entity health views to manage Operating System metrics ingested in the Splunk metric store
 
 .. image:: img/draw.io/overview_diagram.png

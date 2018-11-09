@@ -1,6 +1,10 @@
 Release notes
 #############
 
+Version 1.0.5
+=============
+- feature: Support for Confluent schema-registry
+
 Version 1.0.4
 =============
 - fix: typo on partitions in Kafka brokers view

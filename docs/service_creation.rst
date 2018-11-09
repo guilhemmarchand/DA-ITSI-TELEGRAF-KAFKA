@@ -111,6 +111,19 @@ Monitoring Kafka Connect Source taks
    :alt: service_kafka_source_task_pic2.png
    :align: center
 
+Monitoring Confluent schema-registry
+====================================
+
+**To monitor one of more Confluent schema-registry nodes, create a new service using the "Kafka schema-registry monitoring" template service and select the proper filters for your entities:**
+
+.. image:: img/service_confluent_schema_registry_pic1.png
+   :alt: service_confluent_schema_registry_pic1.png
+   :align: center
+
+.. image:: img/service_confluent_schema_registry_pic2.png
+   :alt: service_confluent_schema_registry_pic2.png
+   :align: center
+
 End to end monitoring with LinkedIn Kafka monitor
 =================================================
 
