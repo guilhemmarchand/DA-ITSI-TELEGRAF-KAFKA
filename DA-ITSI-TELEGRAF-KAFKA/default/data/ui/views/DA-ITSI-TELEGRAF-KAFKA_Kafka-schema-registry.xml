@@ -197,7 +197,7 @@
 
     <row depends="$chart1$">
         <panel>
-            <title>Total number of active Jetty TCP connections</title>
+            <title>Total number of active Jetty TCP connections (connections-active)</title>
             <chart>
                 <search depends="$chart1$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_schema-registry.jetty-metrics.connections-active" jolokia_agent_url=$jolokia_agent_url$ span=10s
@@ -216,7 +216,7 @@
             </chart>
         </panel>
         <panel>
-            <title>Average rate per second of opened Jetty TCP connections</title>
+            <title>Average rate per second of opened Jetty TCP connections (connections-opened-rate)</title>
             <chart>
                 <search depends="$chart1$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_schema-registry.jetty-metrics.connections-opened-rate" jolokia_agent_url=$jolokia_agent_url$ span=10s
@@ -237,10 +237,10 @@
     </row>
     <row depends="$chart1$">
         <panel>
-            <title>Average rate per second of closed Jetty TCP connections</title>
+            <title>Average rate per second of closed Jetty TCP connections (connections-closed-rate)</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_schema-registry.jetty-metrics.connections-active" jolokia_agent_url=$jolokia_agent_url$ span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_schema-registry.jetty-metrics.connections-closed-rate" jolokia_agent_url=$jolokia_agent_url$ span=10s
 | timechart `telegraf_kafka_span` avg(_value) as value</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -256,7 +256,7 @@
             </chart>
         </panel>
         <panel>
-            <title>Historical master/slave state (0=slave / 1=master)</title>
+            <title>Historical master/slave state (master-slave-role, 0=slave / 1=master)</title>
             <chart>
                 <search depends="$chart1$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_schema-registry.master-slave-role.master-slave-role" jolokia_agent_url=$jolokia_agent_url$ span=10s
@@ -361,7 +361,7 @@
             </chart>
         </panel>
         <panel>
-            <title>Average request size in bytes (response-size-avg)</title>
+            <title>Average response size in bytes (response-size-avg)</title>
             <chart>
                 <search depends="$chart2$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_schema-registry.jersey-metrics.response-size-avg" jolokia_agent_url=$jolokia_agent_url$ span=10s
