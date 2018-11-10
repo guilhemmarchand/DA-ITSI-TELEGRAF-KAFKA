@@ -15,7 +15,9 @@ Index definition
 
 **The ITSI module relies by default on the creation of a metrics index called "telegraf_kafka":**
 
-*indexes.conf example with no Splunk volume:*::
+*indexes.conf example with no Splunk volume:*
+
+::
 
    [telegraf_kafka]
    coldPath = $SPLUNK_DB/telegraf_kafka/colddb
@@ -23,7 +25,9 @@ Index definition
    homePath = $SPLUNK_DB/telegraf_kafka/db
    thawedPath = $SPLUNK_DB/telegraf_kafka/thaweddb
 
-*indexes.conf example with Splunk volumes:*::
+*indexes.conf example with Splunk volumes:*
+
+::
 
    [telegraf_kafka]
    coldPath = volume:cold/telegraf_kafka/colddb
@@ -44,7 +48,9 @@ HEC input ingestion and definition
 
 **The default recommended way of ingesting the Kafka metrics is using the HTTP Events Collector method which requires the creation of an HEC input.**
 
-*inputs.conf example:*::
+*inputs.conf example:*
+
+::
 
    [http://telegraf_kafka_monitoring]
    disabled = 0
@@ -80,11 +86,9 @@ Telegraf installation, configuration and start
 
 - https://github.com/influxdata/telegraf
 
-**Telegraf is extremely container friendly, and in the context of Kafka monitoring this is even by far the best approach:**
+**Telegraf is extremely container friendly, a container approach is very convenient as you can easily run multiple Telegraf containers to monitor each of the Kafka infrastructure components:**
 
 - https://hub.docker.com/r/_/telegraf/
-
-**YAML configuration are provided for docker-compose and Kubernetes!**
 
 Telegraf output configuration
 =============================
@@ -107,7 +111,9 @@ If you use this same system for monitoring Kafka itself, it is very likely that 
 
 The recommendation is to rely either on Splunk HEC or TCP inputs to forward Telegraf metrics data for the Kafka monitoring.
 
-**A minimal configuration for telegraf.conf, running in container or as a regular process in machine and forwarding to HEC:**::
+**A minimal configuration for telegraf.conf, running in container or as a regular process in machine and forwarding to HEC:**
+
+::
 
     [agent]
       interval = "10s"
@@ -132,6 +138,44 @@ The recommendation is to rely either on Splunk HEC or TCP inputs to forward Tele
 
 * https://da-itsi-telegraf-os.readthedocs.io/en/latest/telegraf.html
 
+Jolokia JVM monitoring
+======================
+
+**Kafka components are being monitored through the very powerful Jolokia agent:**
+
+- https://jolokia.org
+
+**Basically, Jolokia JVM agent can be started in 2 modes, either as using the -javaagent argument during the start of the JVM, or on the fly by attaching Jolokia to the JVM running PID:**
+
+- https://jolokia.org/reference/html/agents.html#agents-jvm
+
+Starting Jolokia with the JVM
+=============================
+
+**To start Jolokia agent using the -javaagent argument, use such option at the start of the JVM:**
+
+::
+
+    -javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0
+
+*Note: This method is the method used in the docker example within this documentation by using the environment variables of the container.*
+
+Starting Jolokia on the fly
+===========================
+
+**To attach Jolokia agent to an existing JVM, identify its process ID (PID), simplistic example:**
+
+::
+
+    ps -ef | grep 'kafka.properties' | grep -v grep | awk '{print $1}'
+
+**Then:**
+
+::
+
+    java -jar /opt/jolokia/jolokia-jvm-1.6.0-agent.jar --host 0.0.0.0 --port 8778 start <PID>
+
+*Add this operation to any custom init scripts you use to start the Kafka components.*
 
 Zookeeper monitoring
 ====================
@@ -141,13 +185,17 @@ Collecting with Telegraf
 
 The Zookeeper monitoring is very simple and achieved by Telegraf and the Zookeeper input plugin.
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Zookeeper servers from one source:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Zookeeper servers from one source:**
+
+::
 
     # zookeeper metrics
     [[inputs.zookeeper]]
       servers = ["zookeeper-1:12181","zookeeper-2:22181","zookeeper-3:32181"]
 
-**Alternatively if each server runs an instance of Zookeeper and you deploy Telegraf, you can simply collect from the localhost:**::
+**Alternatively if each server runs an instance of Zookeeper and you deploy Telegraf, you can simply collect from the localhost:**
+
+::
 
     # zookeeper metrics
     [[inputs.zookeeper]]
@@ -156,7 +204,9 @@ The Zookeeper monitoring is very simple and achieved by Telegraf and the Zookeep
 Full telegraf.conf example
 --------------------------
 
-*The following telegraf.conf collects a cluster of 3 Zookeeper servers:*::
+*The following telegraf.conf collects a cluster of 3 Zookeeper servers:*
+
+::
 
    [agent]
      interval = "10s"
@@ -187,25 +237,21 @@ Full telegraf.conf example
    :alt: zookeeper_metrics_workspace.png
    :align: center
 
-**Using mcatalog search command to verify data availability:**::
+**Using mcatalog search command to verify data availability:**
+
+::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=zookeeper.*
 
 Kafka brokers monitoring with Jolokia
 =====================================
 
-Deploying Jolokia
------------------
+Jolokia
+-------
 
-**Jolokia is a very powerful JMX agent that can be attached to the existing JVM.**
+**example: Jolokia start in docker environment:**
 
-In the context of Kafka, once the agent jar file has been uploaded to the broker, the only thing required is adding the following settings in the JAVA startup command line of Kafka (KAFKA_OPTS):::
-
-    -javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0
-
-Which automatically starts Jolokia and allows it to listen to any incoming connection, more settings are available off course.
-
-**In a docker environment, you will rely on environment variables, example with an extract from a docker-compose configuration:**::
+::
 
     environment:
       KAFKA_BROKER_ID: 1
@@ -218,14 +264,18 @@ Collecting with Telegraf
 
 Depending on how you run Kafka and your architecture preferences, you may prefer to collect all the brokers metrics from one Telegraf collector, or installed locally on the Kafka brocker machine.
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**
+
+::
 
     # Kafka JVM monitoring
     [[inputs.jolokia2_agent]]
       name_prefix = "kafka_"
       urls = ["http://kafka-1:18778/jolokia","http://kafka-2:28778/jolokia","http://kafka-3:38778/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost assuming Telegraf is running on the same machine:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost assuming Telegraf is running on the same machine:**
+
+::
 
     # Kafka JVM monitoring
     [[inputs.jolokia2_agent]]
@@ -235,7 +285,9 @@ Depending on how you run Kafka and your architecture preferences, you may prefer
 Kafka broker JMX beans model
 ----------------------------
 
-**After this initial configuration comes the configuration of the JMX beans to be collected, the ITSI module relies on the following model:**::
+**After this initial configuration comes the configuration of the JMX beans to be collected, the ITSI module relies on the following model:**
+
+::
 
     [[inputs.jolokia2_agent.metric]]
       name         = "controller"
@@ -320,7 +372,9 @@ Kafka broker JMX beans model
 Full telegraf.conf example
 --------------------------
 
-*The following telegraf.conf collects a cluster of 3 Kafka brokers:*::
+*The following telegraf.conf collects a cluster of 3 Kafka brokers:*
+
+::
 
     [agent]
       interval = "10s"
@@ -433,19 +487,21 @@ Full telegraf.conf example
    :alt: kafka_kafka_metrics_workspace.png
    :align: center
 
-**Using mcatalog search command to verify data availability:**::
+**Using mcatalog search command to verify data availability:**
+
+::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_*.*
 
 Kafka connect monitoring
 ========================
 
-Deploying Jolokia
------------------
+Jolokia
+-------
 
-**Deploying Jolokia for Kafka Connect nodes is identical to the Kafka brokers deployment.**
+**example: Jolokia start in docker environment:**
 
-**In a docker environment, you will rely on environment variables, example with an extract from a docker-compose configuration:**::
+::
 
     environment:
       KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18779,host=0.0.0.0"
@@ -454,14 +510,18 @@ Deploying Jolokia
 Collecting with Telegraf
 ------------------------
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**
+
+::
 
    # Kafka-connect JVM monitoring
    [[inputs.jolokia2_agent]]
      name_prefix = "kafka_connect."
      urls = ["http://kafka-connect-1:18779/jolokia","http://kafka-connect-2:28779/jolokia","http://kafka-connect-3:38779/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**
+
+::
 
    # Kafka-connect JVM monitoring
     [[inputs.jolokia2_agent]]
@@ -471,7 +531,9 @@ Collecting with Telegraf
 Full telegraf.conf example
 --------------------------
 
-*bellow a full telegraf.conf example:*::
+*bellow a full telegraf.conf example:*
+
+::
 
    [agent]
      interval = "10s"
@@ -547,7 +609,9 @@ Full telegraf.conf example
    :alt: kafka_kafka_connect_workspace.png
    :align: center
 
-**Using mcatalog search command to verify data availability:**::
+**Using mcatalog search command to verify data availability:**
+
+::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_connect.*
 
@@ -567,7 +631,9 @@ As a builtin configuration, the kafka-monitor implements a jolokia agent, so col
 
 * https://github.com/linkedin/kafka-monitor/tree/master/docker
 
-**Once your Kafka monitor is running, you need a Telegraf instance that will be collecting the JMX beans, example:**::
+**Once your Kafka monitor is running, you need a Telegraf instance that will be collecting the JMX beans, example:**
+
+::
 
     [agent]
       interval = "10s"
@@ -604,17 +670,21 @@ As a builtin configuration, the kafka-monitor implements a jolokia agent, so col
    :alt: kafka_monitoring_metrics_workspace.png
    :align: center
 
-**Using mcatalog search command to verify data availability:**::
+**Using mcatalog search command to verify data availability:**
+
+::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_kafka-monitor.*
 
 Confluent schema-registry
 =========================
 
-Deploying Jolokia
------------------
+Jolokia
+-------
 
-**In a docker environment, you will rely on environment variables, example with an extract from a docker-compose configuration:**::
+**example: Jolokia start in docker environment:**
+
+::
 
     environment:
       SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper-1:12181,zookeeper-2:12181,zookeeper-3:12181
@@ -625,13 +695,17 @@ Deploying Jolokia
 Collecting with Telegraf
 ------------------------
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**
+
+::
 
    [[inputs.jolokia2_agent]]
      name_prefix = "kafka_schema-registry."
      urls = ["http://schema-registry:18783/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**::
+**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**
+
+::
 
    [[inputs.jolokia2_agent.metric]]
      name         = "jetty-metrics"
@@ -649,7 +723,9 @@ Collecting with Telegraf
 Full telegraf.conf example
 --------------------------
 
-*bellow a full telegraf.conf example:*::
+*bellow a full telegraf.conf example:*
+
+::
 
    [agent]
      interval = "10s"
@@ -695,7 +771,9 @@ Full telegraf.conf example
    :alt: confluent_schema-registry_metrics_workspace.png
    :align: center
 
-**Using mcatalog search command to verify data availability:**::
+**Using mcatalog search command to verify data availability:**
+
+::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_schema-registry.*
 
