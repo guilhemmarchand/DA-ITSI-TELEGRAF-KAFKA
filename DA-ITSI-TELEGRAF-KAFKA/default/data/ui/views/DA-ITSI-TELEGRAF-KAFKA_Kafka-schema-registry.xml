@@ -91,7 +91,6 @@
         </panel>
     </row>
 
-
     <row>
         <panel>
             <input type="link" token="top_linkinput">
@@ -104,6 +103,7 @@
                 <choice value="chart6">SUBJECTS VERSIONS</choice>
                 <choice value="chart7">SCHEMA IDS-GET-SHEMAS</choice>
                 <choice value="chart8">COMPATIBILITY SUBJECTS VERSIONS</choice>
+                <choice value="chart9">MASTER/SLAVE ROLE</choice>
                 <default>chart1</default>
                 <change>
                     <condition value="chart1">
@@ -115,6 +115,7 @@
                         <unset token="chart6"></unset>
                         <unset token="chart7"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart2">
                         <set token="chart2">true</set>
@@ -125,6 +126,7 @@
                         <unset token="chart6"></unset>
                         <unset token="chart7"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart3">
                         <set token="chart3">true</set>
@@ -135,6 +137,7 @@
                         <unset token="chart6"></unset>
                         <unset token="chart7"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart4">
                         <set token="chart4">true</set>
@@ -145,6 +148,7 @@
                         <unset token="chart6"></unset>
                         <unset token="chart7"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart5">
                         <set token="chart5">true</set>
@@ -155,6 +159,7 @@
                         <unset token="chart6"></unset>
                         <unset token="chart7"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart6">
                         <set token="chart6">true</set>
@@ -165,6 +170,7 @@
                         <unset token="chart5"></unset>
                         <unset token="chart7"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart7">
                         <set token="chart7">true</set>
@@ -175,6 +181,7 @@
                         <unset token="chart5"></unset>
                         <unset token="chart6"></unset>
                         <unset token="chart8"></unset>
+                        <unset token="chart9"></unset>
                     </condition>
                     <condition value="chart8">
                         <set token="chart8">true</set>
@@ -185,6 +192,18 @@
                         <unset token="chart5"></unset>
                         <unset token="chart6"></unset>
                         <unset token="chart7"></unset>
+                        <unset token="chart9"></unset>
+                    </condition>
+                    <condition value="chart9">
+                        <set token="chart9">true</set>
+                        <unset token="chart1"></unset>
+                        <unset token="chart2"></unset>
+                        <unset token="chart3"></unset>
+                        <unset token="chart4"></unset>
+                        <unset token="chart5"></unset>
+                        <unset token="chart6"></unset>
+                        <unset token="chart7"></unset>
+                        <unset token="chart8"></unset>
                     </condition>
                 </change>
             </input>
@@ -1078,6 +1097,27 @@
                 <option name="charting.legend.placement">none</option>
                 <option name="charting.drilldown">all</option>
             </chart>
+        </panel>
+    </row>
+
+    <!--
+    chart$9: master-slave role
+    -->
+
+    <row depends="$chart9$">
+        <panel>
+            <table>
+                <search depends="$chart9$">
+                    <query>| mstats latest(_value) as value WHERE `telegraf_kafka_index` metric_name="kafka_schema-registry.master-slave-role.master-slave-role" jolokia_agent_url=* by jolokia_agent_url, metric_name
+| eval {metric_name}=value
+| stats first(kafka_schema-registry.*) as "*" by jolokia_agent_url
+| rename "master-slave-role.master-slave-role" as role | eval role=case(role=0, "slave", role="1", "master")
+| fields jolokia_agent_url, role | sort 0 jolokia_agent_url</query>
+                    <earliest>$earliest$</earliest>
+                    <latest>$latest$</latest>
+                    <sampleRatio>1</sampleRatio>
+                </search>
+            </table>
         </panel>
     </row>
 

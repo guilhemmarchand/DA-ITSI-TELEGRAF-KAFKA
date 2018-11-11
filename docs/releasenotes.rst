@@ -4,6 +4,7 @@ Release notes
 Version 1.0.5
 =============
 - feature: Support for Confluent schema-registry
+- feature: Adding follower/leader info in Zookeeper entity view
 
 Version 1.0.4
 =============
