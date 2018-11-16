@@ -82,9 +82,19 @@ Telegraf installation and configuration
 Telegraf installation, configuration and start
 ----------------------------------------------
 
-**If you are running Telegraf as a regular process in machine, the installation of Telegraf is really straightforward, consult:**
+**If you are running Telegraf as a regular process in machine, the standard installation of Telegraf is really straightforward, consult:**
 
 - https://github.com/influxdata/telegraf
+
+**If you have a Splunk Universal Forwarder deployment, you can deploy, run and maintain Telegraf and its configuration through a Splunk application (TA), consult:**
+
+- https://da-itsi-telegraf-os.readthedocs.io/en/latest/telegraf.html#telegraf-deployment-as-splunk-application-deployed-by-splunk-ta
+
+An example of a ready to use TA application can be found here:
+
+- https://github.com/guilhemmarchand/TA-telegraf-amd64
+
+For Splunk customers, this solution has various advantages as you can deploy and maintain using your existing Splunk infrastructure.
 
 **Telegraf is extremely container friendly, a container approach is very convenient as you can easily run multiple Telegraf containers to monitor each of the Kafka infrastructure components:**
 
@@ -193,13 +203,13 @@ The Zookeeper monitoring is very simple and achieved by Telegraf and the Zookeep
     [[inputs.zookeeper]]
       servers = ["zookeeper-1:12181","zookeeper-2:22181","zookeeper-3:32181"]
 
-**Alternatively if each server runs an instance of Zookeeper and you deploy Telegraf, you can simply collect from the localhost:**
+**If each server runs an instance of Zookeeper and you deploy Telegraf, you can simply collect from the localhost:**
 
 ::
 
     # zookeeper metrics
     [[inputs.zookeeper]]
-      servers = ["localhost:12181"]
+      servers = ["$HOSTNAME:2181"]
 
 Full telegraf.conf example
 --------------------------
@@ -280,7 +290,7 @@ Depending on how you run Kafka and your architecture preferences, you may prefer
     # Kafka JVM monitoring
     [[inputs.jolokia2_agent]]
       name_prefix = "kafka_"
-      urls = ["http://localhost:8778/jolokia"]
+      urls = ["http://$HOSTNAME:8778/jolokia"]
 
 Kafka broker JMX beans model
 ----------------------------
@@ -526,7 +536,7 @@ Collecting with Telegraf
    # Kafka-connect JVM monitoring
     [[inputs.jolokia2_agent]]
       name_prefix = "kafka_"
-      urls = ["http://localhost:8778/jolokia"]
+      urls = ["http://$HOSTNAME:8778/jolokia"]
 
 Full telegraf.conf example
 --------------------------
