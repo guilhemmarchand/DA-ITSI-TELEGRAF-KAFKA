@@ -535,7 +535,7 @@ Collecting with Telegraf
 
    # Kafka-connect JVM monitoring
     [[inputs.jolokia2_agent]]
-      name_prefix = "kafka_"
+      name_prefix = "kafka_connect."
       urls = ["http://$HOSTNAME:8778/jolokia"]
 
 Full telegraf.conf example
