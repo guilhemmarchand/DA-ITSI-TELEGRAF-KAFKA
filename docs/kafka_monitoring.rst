@@ -274,7 +274,7 @@ Collecting with Telegraf
 
 Depending on how you run Kafka and your architecture preferences, you may prefer to collect all the brokers metrics from one Telegraf collector, or installed locally on the Kafka brocker machine.
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**
+**Connecting to multiple remote Jolokia instances:**
 
 ::
 
@@ -283,7 +283,7 @@ Depending on how you run Kafka and your architecture preferences, you may prefer
       name_prefix = "kafka_"
       urls = ["http://kafka-1:18778/jolokia","http://kafka-2:28778/jolokia","http://kafka-3:38778/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost assuming Telegraf is running on the same machine:**
+**Connecting to the local Jolokia instance:**
 
 ::
 
@@ -291,93 +291,6 @@ Depending on how you run Kafka and your architecture preferences, you may prefer
     [[inputs.jolokia2_agent]]
       name_prefix = "kafka_"
       urls = ["http://$HOSTNAME:8778/jolokia"]
-
-Kafka broker JMX beans model
-----------------------------
-
-**After this initial configuration comes the configuration of the JMX beans to be collected, the ITSI module relies on the following model:**
-
-::
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "controller"
-      mbean        = "kafka.controller:name=*,type=*"
-      field_prefix = "$1."
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "replica_manager"
-      mbean        = "kafka.server:name=*,type=ReplicaManager"
-      field_prefix = "$1."
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "purgatory"
-      mbean        = "kafka.server:delayedOperation=*,name=*,type=DelayedOperationPurgatory"
-      field_prefix = "$1."
-      field_name   = "$2"
-
-    [[inputs.jolokia2_agent.metric]]
-      name     = "client"
-      mbean    = "kafka.server:client-id=*,type=*"
-      tag_keys = ["client-id", "type"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "network"
-      mbean        = "kafka.network:name=*,request=*,type=RequestMetrics"
-      field_prefix = "$1."
-      tag_keys     = ["request"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "network"
-      mbean        = "kafka.network:name=ResponseQueueSize,type=RequestChannel"
-      field_prefix = "ResponseQueueSize"
-      tag_keys     = ["name"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "network"
-      mbean        = "kafka.network:name=NetworkProcessorAvgIdlePercent,type=SocketServer"
-      field_prefix = "NetworkProcessorAvgIdlePercent"
-      tag_keys     = ["name"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "topics"
-      mbean        = "kafka.server:name=*,type=BrokerTopicMetrics"
-      field_prefix = "$1."
-
-    [[inputs.jolokia2_agent.metric]]
-      name         = "topic"
-      mbean        = "kafka.server:name=*,topic=*,type=BrokerTopicMetrics"
-      field_prefix = "$1."
-      tag_keys     = ["topic"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name       = "partition"
-      mbean      = "kafka.log:name=*,partition=*,topic=*,type=Log"
-      field_name = "$1"
-      tag_keys   = ["topic", "partition"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name       = "log"
-      mbean      = "kafka.log:name=LogFlushRateAndTimeMs,type=LogFlushStats"
-      field_name = "LogFlushRateAndTimeMs"
-      tag_keys   = ["name"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name       = "partition"
-      mbean      = "kafka.cluster:name=UnderReplicated,partition=*,topic=*,type=Partition"
-      field_name = "UnderReplicatedPartitions"
-      tag_keys   = ["topic", "partition"]
-
-    [[inputs.jolokia2_agent.metric]]
-      name     = "request_handlers"
-      mbean    = "kafka.server:name=RequestHandlerAvgIdlePercent,type=KafkaRequestHandlerPool"
-      tag_keys = ["name"]
-
-    # JVM garbage collector monitoring
-    [[inputs.jolokia2_agent.metric]]
-      name     = "jvm_garbage_collector"
-      mbean    = "java.lang:name=*,type=GarbageCollector"
-      paths    = ["CollectionTime", "CollectionCount", "LastGcInfo"]
-      tag_keys = ["name"]
 
 Full telegraf.conf example
 --------------------------
@@ -520,7 +433,7 @@ Jolokia
 Collecting with Telegraf
 ------------------------
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**
+**Connecting to multiple remote Jolokia instances:**
 
 ::
 
@@ -529,7 +442,7 @@ Collecting with Telegraf
      name_prefix = "kafka_connect."
      urls = ["http://kafka-connect-1:18779/jolokia","http://kafka-connect-2:28779/jolokia","http://kafka-connect-3:38779/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**
+**Connecting to local Jolokia instance:**
 
 ::
 
@@ -705,7 +618,7 @@ Jolokia
 Collecting with Telegraf
 ------------------------
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor multiple Kafka brokers from one Teleraf:**
+**Connecting to multiple remote Jolokia instances:**
 
 ::
 
@@ -713,22 +626,14 @@ Collecting with Telegraf
      name_prefix = "kafka_schema-registry."
      urls = ["http://schema-registry:18783/jolokia"]
 
-**The following configuration stands in telegraf.conf and configures the input plugin to monitor the Kafka broker running on the localhost where Telegraf is running:**
+**Connecting to local Jolokia instance:**
 
 ::
 
-   [[inputs.jolokia2_agent.metric]]
-     name         = "jetty-metrics"
-     mbean        = "kafka.schema.registry:type=jetty-metrics"
-     paths = ["connections-active", "connections-opened-rate", "connections-closed-rate"]
-
-   [[inputs.jolokia2_agent.metric]]
-     name         = "master-slave-role"
-     mbean        = "kafka.schema.registry:type=master-slave-role"
-
-   [[inputs.jolokia2_agent.metric]]
-     name         = "jersey-metrics"
-     mbean        = "kafka.schema.registry:type=jersey-metrics"
+   # Kafka-connect JVM monitoring
+    [[inputs.jolokia2_agent]]
+     name_prefix = "kafka_schema-registry."
+      urls = ["http://$HOSTNAME:8778/jolokia"]
 
 Full telegraf.conf example
 --------------------------
@@ -786,6 +691,90 @@ Full telegraf.conf example
 ::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_schema-registry.*
+
+Confluent ksql-server
+=====================
+
+Jolokia
+-------
+
+**example: Jolokia start in docker environment:**
+
+::
+
+    environment:
+      KSQL_BOOTSTRAP_SERVERS: PLAINTEXT://kafka-1:19092,PLAINTEXT://kafka-2:29092,PLAINTEXT://kafka-3:39092
+      KSQL_KSQL_SERVICE_ID: confluent_standalone_1_
+      SCHEMA_REGISTRY_LISTENERS: "http://0.0.0.0:8081"
+      KSQL_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18784,host=0.0.0.0"
+
+Collecting with Telegraf
+------------------------
+
+**Connecting to multiple remote Jolokia instances:**
+
+::
+
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_"
+      urls = ["http://ksql-server-1:18784/jolokia"]
+
+**Connecting to local Jolokia instance:**
+
+::
+
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_"
+      urls = ["http://$HOSTNAME:18784/jolokia"]
+
+Full telegraf.conf example
+--------------------------
+
+*bellow a full telegraf.conf example:*
+
+::
+
+   [agent]
+     interval = "10s"
+     flush_interval = "10s"
+     hostname = "$HOSTNAME"
+
+   # outputs
+   [[outputs.http]]
+      url = "https://splunk:8088/services/collector"
+      insecure_skip_verify = true
+      data_format = "splunkmetric"
+       ## Provides time, index, source overrides for the HEC
+      splunkmetric_hec_routing = true
+       ## Additional HTTP headers
+       [outputs.http.headers]
+      # Should be set manually to "application/json" for json data_format
+         Content-Type = "application/json"
+         Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
+         X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
+
+   # schema-registry JVM monitoring
+
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_"
+      urls = ["http://ksql-server:18784/jolokia"]
+
+    [[inputs.jolokia2_agent.metric]]
+      name         = "ksql-server"
+      mbean        = "io.confluent.ksql.metrics:type=*"
+      paths = ["error-rate", "num-persistent-queries", "messages-consumed-per-sec", "messages-produced-per-sec", "num-active-queries" , "num-idle-queries", "messages-consumed-max"]
+
+**Vizualizations of metrics within the Splunk metrics workspace application:**
+
+.. image:: img/confluent_ksql_server_metrics_workspace.png
+   :alt: confluent_ksql_server_metrics_workspace.png
+   :align: center
+
+**Using mcatalog search command to verify data availability:**
+
+::
+
+    | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_ksql-server.*
 
 Operating System level metrics
 ==============================
