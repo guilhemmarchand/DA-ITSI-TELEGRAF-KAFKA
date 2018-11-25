@@ -241,7 +241,7 @@ Full telegraf.conf example
    [[inputs.zookeeper]]
      servers = ["zookeeper-1:12181","zookeeper-2:22181","zookeeper-3:32181"]
 
-**Vizualizations of metrics within the Splunk metrics workspace application:**
+**Visualization of metrics within the Splunk metrics workspace application:**
 
 .. image:: img/zookeeper_metrics_workspace.png
    :alt: zookeeper_metrics_workspace.png
@@ -404,7 +404,7 @@ Full telegraf.conf example
       paths    = ["CollectionTime", "CollectionCount", "LastGcInfo"]
       tag_keys = ["name"]
 
-**Vizualizations of metrics within the Splunk metrics workspace application:**
+**Visualization of metrics within the Splunk metrics workspace application:**
 
 .. image:: img/kafka_monitoring_metrics_workspace.png
    :alt: kafka_kafka_metrics_workspace.png
@@ -526,7 +526,7 @@ Full telegraf.conf example
          failed = 3
          destroyed = 4
 
-**Vizualizations of metrics within the Splunk metrics workspace application:**
+**Visualization of metrics within the Splunk metrics workspace application:**
 
 .. image:: img/kafka_connect_metrics_workspace.png
    :alt: kafka_kafka_connect_workspace.png
@@ -587,7 +587,7 @@ As a builtin configuration, the kafka-monitor implements a jolokia agent, so col
       name         = "kafka-monitor"
       mbean        = "kmf.services:name=*,type=*"
 
-**Vizualizations of metrics within the Splunk metrics workspace application:**
+**Visualization of metrics within the Splunk metrics workspace application:**
 
 .. image:: img/kafka_monitoring_metrics_workspace.png
    :alt: kafka_monitoring_metrics_workspace.png
@@ -680,7 +680,7 @@ Full telegraf.conf example
      name         = "jersey-metrics"
      mbean        = "kafka.schema.registry:type=jersey-metrics"
 
-**Vizualizations of metrics within the Splunk metrics workspace application:**
+**Visualization of metrics within the Splunk metrics workspace application:**
 
 .. image:: img/confluent_schema-registry_metrics_workspace.png
    :alt: confluent_schema-registry_metrics_workspace.png
@@ -753,7 +753,7 @@ Full telegraf.conf example
          Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
          X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
 
-   # schema-registry JVM monitoring
+   # ksql-server JVM monitoring
 
     [[inputs.jolokia2_agent]]
       name_prefix = "kafka_"
@@ -764,7 +764,7 @@ Full telegraf.conf example
       mbean        = "io.confluent.ksql.metrics:type=*"
       paths = ["error-rate", "num-persistent-queries", "messages-consumed-per-sec", "messages-produced-per-sec", "num-active-queries" , "num-idle-queries", "messages-consumed-max"]
 
-**Vizualizations of metrics within the Splunk metrics workspace application:**
+**Visualization of metrics within the Splunk metrics workspace application:**
 
 .. image:: img/confluent_ksql_server_metrics_workspace.png
    :alt: confluent_ksql_server_metrics_workspace.png
@@ -775,6 +775,95 @@ Full telegraf.conf example
 ::
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_ksql-server.*
+
+Confluent kafka-rest
+====================
+
+Jolokia
+-------
+
+**example: Jolokia start in docker environment:**
+
+::
+
+    environment:
+      KAFKA_REST_ZOOKEEPER_CONNECT: "zookeeper-1:12181,zookeeper-2:22181,zookeeper-3:32181"
+      KAFKA_REST_LISTENERS: "http://localhost:18089"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry-1:18083"
+      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18785,host=0.0.0.0"
+      KAFKA_REST_HOST_NAME: "kafka-rest"
+
+Collecting with Telegraf
+------------------------
+
+**Connecting to multiple remote Jolokia instances:**
+
+::
+
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_kafka-rest."
+      urls = ["http://kafka-rest:8778/jolokia"]
+
+**Connecting to local Jolokia instance:**
+
+::
+
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_kafka-rest."
+      urls = ["http://$HOSTNAME:18785/jolokia"]
+
+Full telegraf.conf example
+--------------------------
+
+*bellow a full telegraf.conf example:*
+
+::
+
+   [agent]
+     interval = "10s"
+     flush_interval = "10s"
+     hostname = "$HOSTNAME"
+
+   # outputs
+   [[outputs.http]]
+      url = "https://splunk:8088/services/collector"
+      insecure_skip_verify = true
+      data_format = "splunkmetric"
+       ## Provides time, index, source overrides for the HEC
+      splunkmetric_hec_routing = true
+       ## Additional HTTP headers
+       [outputs.http.headers]
+      # Should be set manually to "application/json" for json data_format
+         Content-Type = "application/json"
+         Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
+         X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
+
+    # kafka-rest JVM monitoring
+
+    [[inputs.jolokia2_agent]]
+      name_prefix = "kafka_kafka-rest."
+      urls = ["http://kafka-rest:18785/jolokia"]
+
+    [[inputs.jolokia2_agent.metric]]
+      name         = "jetty-metrics"
+      mbean        = "kafka.rest:type=jetty-metrics"
+      paths = ["connections-active", "connections-opened-rate", "connections-closed-rate"]
+
+    [[inputs.jolokia2_agent.metric]]
+      name         = "jersey-metrics"
+      mbean        = "kafka.rest:type=jersey-metrics"
+
+**Visualization of metrics within the Splunk metrics workspace application:**
+
+.. image:: img/confluent_kafka_rest_metrics_workspace.png
+   :alt: confluent_kafka_rest_metrics_workspace.png
+   :align: center
+
+**Using mcatalog search command to verify data availability:**
+
+::
+
+    | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_kafka_kafka-rest.*
 
 Operating System level metrics
 ==============================
