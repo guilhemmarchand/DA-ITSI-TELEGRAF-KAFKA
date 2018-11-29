@@ -170,6 +170,44 @@ Starting Jolokia with the JVM
 
 *Note: This method is the method used in the docker example within this documentation by using the environment variables of the container.*
 
+**When running on dedicated servers or virtual machines, update the relevant systemd configuration file to start Jolokia automatically:**
+
+For Kafka brokers
+-----------------
+
+::
+
+    Environment="KAFKA_OPTS=-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0"
+
+For Kafka Connect
+-----------------
+
+::
+
+    Environment="KAFKA_OPTS=-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0"
+
+For Confluent schema-registry
+-----------------------------
+
+::
+
+    Environment="KAFKA_OPTS=-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0"
+
+For Confluent ksql-server
+-------------------------
+
+::
+
+    Environment="KSQL_OPTS=-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0"
+
+For Confluent kafka-rest
+------------------------
+
+::
+
+    Environment="KAFKAREST_OPTS=-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0"
+
+
 Starting Jolokia on the fly
 ===========================
 
