@@ -790,8 +790,10 @@ Jolokia
       KAFKA_REST_ZOOKEEPER_CONNECT: "zookeeper-1:12181,zookeeper-2:22181,zookeeper-3:32181"
       KAFKA_REST_LISTENERS: "http://localhost:18089"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry-1:18083"
-      KAFKA_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18785,host=0.0.0.0"
+      KAFKAREST_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=18785,host=0.0.0.0"
       KAFKA_REST_HOST_NAME: "kafka-rest"
+
+*notes: KAFKAREST_OPTS is not a typo, this is (strangely) the right name to configuration java options.*
 
 Collecting with Telegraf
 ------------------------
