@@ -2,7 +2,7 @@
     <label>Kafka Topic - Entity health view</label>
 
     <search id="topic_activity_summary">
-        <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.MessagesInPerSec.OneMinuteRate" OR metric_name="kafka_topic.BytesInPerSec.OneMinuteRate" OR metric_name="kafka_topic.BytesOutPerSec.OneMinuteRate" OR metric_name="kafka_topic.BytesRejectedPerSec.OneMinuteRate" OR metric_name="kafka_topic.FailedFetchRequestsPerSec.OneMinuteRate" OR metric_name="kafka_topic.FailedProduceRequestsPerSec.OneMinuteRate" OR metric_name="kafka_topic.TotalFetchRequestsPerSec.OneMinuteRate" OR metric_name="kafka_topic.TotalProduceRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by metric_name, topic
+        <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.MessagesInPerSec.OneMinuteRate" OR metric_name="kafka_topic.BytesInPerSec.OneMinuteRate" OR metric_name="kafka_topic.BytesOutPerSec.OneMinuteRate" OR metric_name="kafka_topic.BytesRejectedPerSec.OneMinuteRate" OR metric_name="kafka_topic.FailedFetchRequestsPerSec.OneMinuteRate" OR metric_name="kafka_topic.FailedProduceRequestsPerSec.OneMinuteRate" OR metric_name="kafka_topic.TotalFetchRequestsPerSec.OneMinuteRate" OR metric_name="kafka_topic.TotalProduceRequestsPerSec.OneMinuteRate" $kafka_topic$ span=10s by metric_name, topic
 | eval {metric_name}=value
 | stats first(kafka_topic.*.OneMinuteRate) as "*" by _time, topic
 | eval KbytesInPerSec=round(BytesInPerSec/1024, 3), KbytesOutPerSec=round(BytesOutPerSec/1024, 3), MessagesInPerSec=round(MessagesInPerSec, 3), TotalFetchRequestsPerSec=round(TotalFetchRequestsPerSec, 3), TotalProduceRequestsPerSec=round(TotalProduceRequestsPerSec, 3)
@@ -15,7 +15,7 @@
     </search>
 
     <search id="summary_table_partitions">
-        <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name=kafka_partition.LogEndOffset OR metric_name=kafka_partition.LogStartOffset OR metric_name=kafka_partition.NumLogSegments OR metric_name=kafka_partition.Size OR metric_name=kafka_partition.UnderReplicatedPartitions topic=$topic$ by jolokia_agent_url, topic, partition, metric_name
+        <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name=kafka_partition.LogEndOffset OR metric_name=kafka_partition.LogStartOffset OR metric_name=kafka_partition.NumLogSegments OR metric_name=kafka_partition.Size OR metric_name=kafka_partition.UnderReplicatedPartitions $kafka_topic$ by jolokia_agent_url, topic, partition, metric_name
 | eval {metric_name}=value
 | stats first(kafka_partition.*) as "*" by jolokia_agent_url, topic, partition</query>
         <earliest>-1h</earliest>
@@ -26,6 +26,25 @@
     <fieldset autoRun="false" submitButton="false">
         <input type="time" searchWhenChanged="true">
             <label></label>
+            <default>
+                <earliestTime>-4h</earliestTime>
+                <latestTime>now</latestTime>
+            </default>
+        </input>
+        <input type="multiselect" token="kafka_topic" searchWhenChanged="true">
+            <label>Kafka topic(s):</label>
+            <!-- Populating Data Model Search -->
+            <search>
+                <query>| savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_topics</query>
+                <earliest>$earliest$</earliest>
+                <latest>$latest$</latest>
+            </search>
+            <valuePrefix>topic="</valuePrefix>
+            <valueSuffix>"</valueSuffix>
+            <delimiter> OR </delimiter>
+            <choice value="*">ANY</choice>
+            <fieldForLabel>kafka_topic</fieldForLabel>
+            <fieldForValue>kafka_topic</fieldForValue>
         </input>
     </fieldset>
 
@@ -33,7 +52,7 @@
         <panel>
             <single>
                 <search>
-                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name=kafka_partition.UnderReplicatedPartitions topic=$topic$ by jolokia_agent_url, partition
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name=kafka_partition.UnderReplicatedPartitions $kafka_topic$ by jolokia_agent_url, partition
 | stats sum(value) as value</query>
                     <earliest>-90s</earliest>
                     <latest>now</latest>
@@ -161,7 +180,7 @@
             <title>Messages/sec</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.MessagesInPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.MessagesInPerSec.OneMinuteRate" $kafka_topic$ span=10s by jolokia_agent_url
 | eval value=round(value, 3)
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
@@ -183,7 +202,7 @@
             <title>Traffic Kbps/In</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesInPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
+                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesInPerSec.OneMinuteRate" $kafka_topic$ span=10s by jolokia_agent_url
 | eval value=round(value/1024, 3)
 | timechart `telegraf_kafka_span` avg(value) as "Avg" useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
@@ -202,7 +221,7 @@
             <title>Traffic Kbps/Out</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesOutPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
+                    <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="kafka_topic.BytesOutPerSec.OneMinuteRate" $kafka_topic$ span=10s by jolokia_agent_url
 | eval value=round(value/1024, 3)
 | timechart `telegraf_kafka_span` avg(value) as "Avg" useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
@@ -224,7 +243,7 @@
             <title>FailedProduceRequestsPerSec</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedProduceRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedProduceRequestsPerSec.OneMinuteRate" $kafka_topic$ span=10s by jolokia_agent_url
 | eval value=round(value, 3)
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
@@ -246,7 +265,7 @@
             <title>FailedFetchRequestsPerSec</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedFetchRequestsPerSec.OneMinuteRate" topic=$topic$ span=10s by jolokia_agent_url
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_topic.FailedFetchRequestsPerSec.OneMinuteRate" $kafka_topic$ span=10s by jolokia_agent_url
 | eval value=round(value, 3)
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" limit=20 useother=false by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
@@ -267,7 +286,7 @@
         <panel>
             <single>
                 <search>
-                    <query>| mcatalog values(partition) as partition where `telegraf_kafka_index` metric_name="kafka_partition.Size" topic=$topic$ by jolokia_agent_url
+                    <query>| mcatalog values(partition) as partition where `telegraf_kafka_index` metric_name="kafka_partition.Size" $kafka_topic$ by jolokia_agent_url
 | stats dc(jolokia_agent_url) as dcount</query>
                 </search>
                 <option name="drilldown">none</option>
@@ -281,7 +300,7 @@
             </single>
             <single>
                 <search>
-                    <query>| mcatalog values(partition) as partition where `telegraf_kafka_index` metric_name="kafka_partition.Size" topic=$topic$ by jolokia_agent_url, topic
+                    <query>| mcatalog values(partition) as partition where `telegraf_kafka_index` metric_name="kafka_partition.Size" $kafka_topic$ by jolokia_agent_url, topic
 | stats dc(partition) as dcount_partition by jolokia_agent_url, topic
 | stats sum(dcount_partition) as dcount_partition</query>
                 </search>
