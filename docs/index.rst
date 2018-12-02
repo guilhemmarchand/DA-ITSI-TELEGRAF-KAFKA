@@ -26,7 +26,7 @@ The ITSI provides builtin and native monitoring for Apache Kafka components, as 
 * Confluent schema-registry
 * Confluent ksql-server
 * Confluent kafka-rest
-* Kafka SLA monitoring with the Linkedin Kafka monitor
+* Kafka SLA and end to end monitoring with the Linkedin Kafka monitor
 
 Overview:
 =========
