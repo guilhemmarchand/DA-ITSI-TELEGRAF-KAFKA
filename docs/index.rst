@@ -18,7 +18,15 @@ The best components are leveraged together to bring the power of a solution with
    :alt: main1.png
    :align: center
 
-The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Kafka topics, Kafka Connect and end to end monitoring with the LinkedIn Kafka monitor.
+The ITSI provides builtin and native monitoring for Apache Kafka components, as well as the Confluent stack components:
+
+* Zookeeper
+* Apache Kafka Brokers
+* Apache Kafka Connect
+* Confluent schema-registry
+* Confluent ksql-server
+* Confluent kafka-rest
+* Kafka SLA monitoring with the Linkedin Kafka monitor
 
 Overview:
 =========
