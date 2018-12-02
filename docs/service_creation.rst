@@ -130,6 +130,32 @@ Monitoring Confluent schema-registry
    :alt: service_confluent_schema_registry_pic2.png
    :align: center
 
+Monitoring Confluent ksql-server
+================================
+
+**To monitor one of more Confluent ksql servers, create a new service using the "Confluent ksql-server monitoring" template service and select the proper filters for your entities:**
+
+.. image:: img/service_confluent_ksql_server_pic1.png
+   :alt: service_confluent_ksql_server_pic1.png
+   :align: center
+
+.. image:: img/service_confluent_ksql_server_pic2.png
+   :alt: service_confluent_ksql_server_pic2.png
+   :align: center
+
+Monitoring Confluent kafka-rest
+===============================
+
+**To monitor one of more Confluent kafka-rest nodes, create a new service using the "Confluent kafka-rest monitoring" template service and select the proper filters for your entities:**
+
+.. image:: img/service_confluent_kafka_rest_pic1.png
+   :alt: service_confluent_kafka_rest_pic1.png
+   :align: center
+
+.. image:: img/service_confluent_kafka_rest_pic2.png
+   :alt: service_confluent_kafka_rest_pic2.png
+   :align: center
+
 End to end monitoring with LinkedIn Kafka monitor
 =================================================
 
