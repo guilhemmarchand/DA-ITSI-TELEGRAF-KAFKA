@@ -27,6 +27,10 @@ Entities automatic import
 +-------------------------------+-----------------------------------------------------------------+
 | Confluent schema-registry     | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_schema-registry   |
 +-------------------------------+-----------------------------------------------------------------+
+| Confluent ksql-server         | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka-ksql-server       |
++-------------------------------+-----------------------------------------------------------------+
+| Confluent kafka-rest          | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka-kafka-rest        |
++-------------------------------+-----------------------------------------------------------------+
 
 **When entities are discovered, entities will be added automatically using the itsi_role information field, with specific per technology aliases fields**
 
@@ -79,6 +83,20 @@ Confluent schema-registry nodes detection
 
 .. image:: img/entities_schema_registry.png
    :alt: entities_schema_registry.png
+   :align: center
+
+Confluent ksql-server nodes detection
+-------------------------------------
+
+.. image:: img/entities_ksql_server.png
+   :alt: entities_ksql_server.png
+   :align: center
+
+Confluent kafka-rest nodes detection
+------------------------------------
+
+.. image:: img/entities_kafka_rest.png
+   :alt: entities_kafka_rest.png
    :align: center
 
 LinkedIn Kafka monitor nodes detection
