@@ -142,6 +142,24 @@ Confluent schema-registry dashboard view
    :alt: dashboard_schema_registry_pic2.png
    :align: center
 
+Confluent ksql-server dashboard view
+####################################
+
+.. image:: img/dashboard_confluent_ksql_server_pic1.png
+   :alt: dashboard_confluent_ksql_server_pic1.png
+   :align: center
+
+Confluent kafka-rest dashboard view
+###################################
+
+.. image:: img/dashboard_confluent_kafka_rest_pic1.png
+   :alt: dashboard_confluent_kafka_rest_pic1.png
+   :align: center
+
+.. image:: img/dashboard_confluent_kafka_rest_pic2.png
+   :alt: dashboard_confluent_kafka_rest_pic2.png
+   :align: center
+
 LinkedIn Kafka monitor view
 ###########################
 
