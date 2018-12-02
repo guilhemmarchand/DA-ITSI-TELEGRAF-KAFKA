@@ -1,6 +1,12 @@
 Release notes
 #############
 
+Version 1.0.6
+=============
+- feature: Support for Confluent ksql-server
+- feature: Support for Confluent kafka-rest
+- feature: event logging integration with the TA-kafka-streaming-platform
+
 Version 1.0.5
 =============
 - feature: Support for Confluent schema-registry
