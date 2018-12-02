@@ -3,23 +3,29 @@ Services creation
 
 **The ITSI module for Telegraf Kafka smart monitoring provides builtin services templates, relying on several base KPIs retrieving data from the metric store.**
 
-* **Zookeeper monitoring**: provides insight monitoring for Zookeeper servers
+* **Zookeeper monitoring**
 
-* **Kafka brokers monitoring**: provides insight monitoring for the Kafka broker infrastructure
+* **Kafka brokers monitoring**
 
-* **Kafka LinkedIn monitor**: provides insight monitoring for the LinkedIn Kafka monitor, end to end monitoring for your Kafka deployment
+* **Kafka LinkedIn monitor**
 
-* **Kafka topic monitoring**: provides insight momitoring for one or more Kafka topics
+* **Kafka topic monitoring**
 
-* **Kafka connect monitoring**: provides insight monitoring for the Kafka connect infrastructure
+* **Kafka connect monitoring**
 
-* **Kafka sink task monitoring**: provides insight monitoring for Kafka connect sink tasks
+* **Kafka sink task monitoring**
 
-* **Kafka source task monitoring**: provides insight monitoring for Kafka connect source tasks
+* **Kafka source task monitoring**
 
-**As a general practice, if you first goal is designing the IT infrastructure in ITSI, a good generic recommendation is to create a main service container for your Kafka infrastructure.**
+* **Confluent schema-registry monitoring**
 
-**As such, every service that will be designed will be linked to the main service. (the main service depends on them)**
+* **Confluent Confluent ksql-server monitoring**
+
+* **Confluent kafka-rest monitoring**
+
+As a general practice, if you first goal is designing the IT infrastructure in ITSI, a good generic recommendation is to create a main service container for your Kafka infrastructure.
+
+As such, every service that will be designed will be linked to the main service. (the main service depends on them)
 
 .. image:: img/itsi_dep.png
    :alt: itsi_dep.png
