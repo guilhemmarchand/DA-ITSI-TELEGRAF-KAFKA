@@ -8,8 +8,6 @@ Welcome to the ITSI module for Telegraf Apache Kafka smart monitoring documentat
 
 The ITSI module for Telegraf Kafka monitoring provides smart insight monitoring for Apache Kafka monitoring, on top of Splunk and ITSI.
 
-The best components are leveraged together to bring the power of a solution with no equivalent on the market.
-
 .. image:: img/glass_table.png
    :alt: glass_table.png
    :align: center
@@ -26,7 +24,11 @@ The ITSI provides builtin and native monitoring for Apache Kafka components, as 
 * Confluent schema-registry
 * Confluent ksql-server
 * Confluent kafka-rest
-* Kafka SLA and end to end monitoring with the Linkedin Kafka monitor
+* Kafka SLA and end to end monitoring with the LinkedIn Kafka monitor
+
+**It is recommended to read the unified guide for Kafka and Confluent monitoring first:**
+
+https://splunk-guide-for-kafka-monitoring.readthedocs.io
 
 Overview:
 =========

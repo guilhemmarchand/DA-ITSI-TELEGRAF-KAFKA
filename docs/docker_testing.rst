@@ -7,6 +7,10 @@ https://github.com/guilhemmarchand/kafka-docker-splunk
 
 **Using the docker templates allows you to create a full pre-configured Kafka environment with docker, just in 30 seconds.**
 
+**Integration with Kubernetes is documented here:**
+
+https://splunk-guide-for-kafka-monitoring.readthedocs.io
+
 *Example:*
 
 - 3 x nodes Zookeeper cluster
