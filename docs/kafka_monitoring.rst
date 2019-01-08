@@ -37,11 +37,11 @@ Index definition
 
 In a Splunk distributed configuration (cluster of indexers), this configuration stands on the cluster master node.
 
-All Splunk searches included in the added refer to the utilisation of a macro called **"telegraf_kafka_index"** including in:
+All Splunk searches included in the added refer to the utilisation of a macro called **"telegraf_kafka_index"** included in:
 
 * DA-ITSI-TELEGRAF-KAFKA/default/macros.conf
 
-If you wish to use a different index model, this macro shall be customized to override the default model, and no other modification will be required.
+If you wish to use a different index model, this macro shall be customized to override the default model.
 
 HEC input ingestion and definition
 ----------------------------------
