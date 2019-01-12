@@ -125,6 +125,12 @@ The recommendation is to rely either on Splunk HEC or TCP inputs to forward Tele
 
 ::
 
+    [global_tags]
+      # the env tag is used by the application for multi-environments management
+      env = "my_env"
+      # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+      label = "my_env_label"
+
     [agent]
       interval = "10s"
       flush_interval = "10s"
@@ -256,6 +262,12 @@ Full telegraf.conf example
 
 ::
 
+   [global_tags]
+     # the env tag is used by the application for multi-environments management
+     env = "my_env"
+     # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+     label = "my_env_label"
+
    [agent]
      interval = "10s"
      flush_interval = "10s"
@@ -336,6 +348,12 @@ Full telegraf.conf example
 *The following telegraf.conf collects a cluster of 3 Kafka brokers:*
 
 ::
+
+    [global_tags]
+      # the env tag is used by the application for multi-environments management
+      env = "my_env"
+      # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+      label = "my_env_label"
 
     [agent]
       interval = "10s"
@@ -496,6 +514,12 @@ Full telegraf.conf example
 
 ::
 
+   [global_tags]
+     # the env tag is used by the application for multi-environments management
+     env = "my_env"
+     # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+     label = "my_env_label"
+
    [agent]
      interval = "10s"
      flush_interval = "10s"
@@ -596,6 +620,12 @@ As a builtin configuration, the kafka-monitor implements a jolokia agent, so col
 
 ::
 
+    [global_tags]
+      # the env tag is used by the application for multi-environments management
+      env = "my_env"
+      # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+      label = "my_env_label"
+
     [agent]
       interval = "10s"
       flush_interval = "10s"
@@ -679,6 +709,12 @@ Full telegraf.conf example
 *bellow a full telegraf.conf example:*
 
 ::
+
+   [global_tags]
+     # the env tag is used by the application for multi-environments management
+     env = "my_env"
+     # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+     label = "my_env_label"
 
    [agent]
      interval = "10s"
@@ -772,6 +808,12 @@ Full telegraf.conf example
 
 ::
 
+   [global_tags]
+     # the env tag is used by the application for multi-environments management
+     env = "my_env"
+     # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+     label = "my_env_label"
+
    [agent]
      interval = "10s"
      flush_interval = "10s"
@@ -858,6 +900,12 @@ Full telegraf.conf example
 *bellow a full telegraf.conf example:*
 
 ::
+
+   [global_tags]
+     # the env tag is used by the application for multi-environments management
+     env = "my_env"
+     # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+     label = "my_env_label"
 
    [agent]
      interval = "10s"
