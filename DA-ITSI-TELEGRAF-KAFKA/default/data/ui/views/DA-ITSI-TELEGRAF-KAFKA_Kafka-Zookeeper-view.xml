@@ -1,8 +1,18 @@
 <form stylesheet="DA-ITSI-TELEGRAF-KAFKA:common.css" hideEdit="true" isVisible="False">
     <label>Zookeeper - Entity health view</label>
 
+    <search id="main_populate">
+        <query>| savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper | search [
+| makeresults
+| eval server="$entity_title$"
+| rex field=server "^(?&lt;env&gt;[^\:]*)\:(?&lt;label&gt;[^\:]*)\:(?&lt;zookeeper_node&gt;[^\:]*)"
+| fields env label zookeeper_node ]</query>
+        <earliest>$earliest$</earliest>
+        <latest>$latest$</latest>
+    </search>
+
     <search id="server_activity_summary">
-        <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" OR metric_name="zookeeper.outstanding_requests" OR metric_name="zookeeper.pending_syncs" $server$ by metric_name span=1s
+        <query>| mstats avg(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" OR metric_name="zookeeper.outstanding_requests" OR metric_name="zookeeper.pending_syncs" $env$ $label$ $server$ by metric_name span=1s
 | eval {metric_name}=value
 | stats first(zookeeper.*) as "*" by _time
 | stats avg(*) as "*"
@@ -21,20 +31,46 @@
                 <latestTime>now</latestTime>
             </default>
         </input>
-        <input type="multiselect" token="server" searchWhenChanged="true">
+
+        <input type="text" token="entity_title" searchWhenChanged="true">
+            <label>Entity:</label>
+        </input>
+
+        <input type="dropdown" token="env" depends="$hidden$" searchWhenChanged="true">
+            <label>Env:</label>
+            <!-- Populating Data Model Search -->
+            <search base="main_populate">
+                <query>dedup env | sort 0 env</query>
+            </search>
+            <prefix>env="</prefix>
+            <suffix>"</suffix>
+            <selectFirstChoice>true</selectFirstChoice>
+            <fieldForLabel>env</fieldForLabel>
+            <fieldForValue>env</fieldForValue>
+        </input>
+        <input type="dropdown" token="label" depends="$hidden$" searchWhenChanged="true">
+            <label>Label:</label>
+            <!-- Populating Data Model Search -->
+            <search base="main_populate">
+                <query>search $env$ | dedup label | sort 0 label</query>
+            </search>
+            <prefix>label="</prefix>
+            <suffix>"</suffix>
+            <selectFirstChoice>true</selectFirstChoice>
+            <fieldForLabel>label</fieldForLabel>
+            <fieldForValue>label</fieldForValue>
+        </input>
+        <input type="dropdown" token="server" depends="$hidden$" searchWhenChanged="true">
             <label>Zookeeper server(s):</label>
             <!-- Populating Data Model Search -->
-            <search>
-                <query>| savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper</query>
-                <earliest>$earliest$</earliest>
-                <latest>$latest$</latest>
+            <search base="main_populate">
+                <query>search $env$ $label$ | dedup server | sort 0 server</query>
             </search>
-            <valuePrefix>server="</valuePrefix>
-            <valueSuffix>"</valueSuffix>
-            <delimiter> OR </delimiter>
-            <choice value="*">ANY</choice>
-            <fieldForLabel>server</fieldForLabel>
-            <fieldForValue>server</fieldForValue>
+            <prefix>server="</prefix>
+            <suffix>"</suffix>
+            <selectFirstChoice>true</selectFirstChoice>
+            <fieldForLabel>zookeeper_node</fieldForLabel>
+            <fieldForValue>zookeeper_node</fieldForValue>
         </input>
     </fieldset>
 
@@ -84,7 +120,7 @@
         <panel>
             <single>
                 <search>
-                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.max_file_descriptor_count" OR metric_name="zookeeper.open_file_descriptor_count" $server$ by metric_name, server
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.max_file_descriptor_count" OR metric_name="zookeeper.open_file_descriptor_count" $env$ $label$ $server$ by metric_name, server
 | eval {metric_name}=value
 | stats first(zookeeper.*) as "*" by server
 | eval percent_file_descriptor_used=round((open_file_descriptor_count/max_file_descriptor_count)*100, 3)
@@ -132,7 +168,7 @@
             <chart>
                 <title>Average latency</title>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" $server$ by server span=1s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" $env$ $label$ $server$ by server span=1s
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" by server</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -150,7 +186,7 @@
             <chart>
                 <title>Outstanding requests</title>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.outstanding_requests" $server$ by server span=1s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.outstanding_requests" $env$ $label$ $server$ by server span=1s
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" by server</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -168,7 +204,7 @@
             <chart rejects="$show_null_pendingsync$">
                 <title>Pending Sync</title>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.pending_syncs" $server$ by server span=1s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.pending_syncs" $env$ $label$ $server$ by server span=1s
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" by server</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -203,7 +239,7 @@
             <chart>
                 <title>File descriptor percentage used</title>
                 <search depends="$chart1$">
-                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.max_file_descriptor_count" OR metric_name="zookeeper.open_file_descriptor_count" $server$ by metric_name, server span=1s
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.max_file_descriptor_count" OR metric_name="zookeeper.open_file_descriptor_count" $env$ $label$ $server$ by metric_name, server span=1s
 | eval {metric_name}=value
 | stats first(zookeeper.*) as "*" by _time, server
 | eval percent_file_descriptor_used=round((open_file_descriptor_count/max_file_descriptor_count)*100, 3)
@@ -224,7 +260,7 @@
             <chart>
                 <title>Packets received</title>
                 <search depends="$chart1$">
-                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.packets_received" $server$ by metric_name, server span=1s
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.packets_received" $env$ $label$ $server$ by metric_name, server span=1s
 | eval {metric_name}=value
 | stats first(zookeeper.*) as "*_counter" by _time, server
 | streamstats current=f last(*_counter) as "*_prev" by server
@@ -248,7 +284,7 @@
             <chart>
                 <title>Packets sent</title>
                 <search depends="$chart1$">
-                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.packets_sent" $server$ by metric_name, server span=1s
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zookeeper.packets_sent" $env$ $label$ $server$ by metric_name, server span=1s
 | eval {metric_name}=value
 | stats first(zookeeper.*) as "*_counter" by _time, server
 | streamstats current=f last(*_counter) as "*_prev" by server
@@ -275,7 +311,7 @@
             <title>Zookeeper log events by log_level</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>eventtype="zookeeper" log_level=* [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper | search $server$ | table server | rename server as host ]
+                    <query>eventtype="zookeeper" log_level=* [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper | search $env$ $label$ $zookeeper_node$ | table zookeeper_node | rename zookeeper_node as host ]
 | timechart useother=f limit=0 minspan=1m count by log_level</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -299,9 +335,6 @@
                 <label>Sourcetypes:</label>
                 <choice value="*">ANY</choice>
                 <choice value="zookeeper:server">zookeeper:server</choice>
-                <choice value="zookeeper:controller">zookeeper:controller</choice>
-                <choice value="zookeeper:state-change">zookeeper:state-change</choice>
-                <choice value="zookeeper:log-cleaner">zookeeper:log-cleaner</choice>
                 <choice value="zookeeper:gc-log">zookeeper:gc-log</choice>
                 <valuePrefix>sourcetype="</valuePrefix>
                 <valueSuffix>"</valueSuffix>
@@ -314,7 +347,7 @@
             </input>
             <event>
                 <search depends="$chart2$">
-                    <query>eventtype="zookeeper" $log_search_tk$ $log_sourcetype_tk$ [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper | search $server$ | table server | rename server as host ]</query>
+                    <query>eventtype="zookeeper" $log_search_tk$ $log_sourcetype_tk$ [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper | search $env$ $label$ $zookeeper_node$ | table zookeeper_node | rename zookeeper_node as host ]</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                     <sampleRatio>1</sampleRatio>

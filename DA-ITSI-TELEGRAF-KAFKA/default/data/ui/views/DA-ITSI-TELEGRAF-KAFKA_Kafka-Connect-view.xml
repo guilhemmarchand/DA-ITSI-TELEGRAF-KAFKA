@@ -1,8 +1,18 @@
 <form stylesheet="DA-ITSI-TELEGRAF-KAFKA:common.css" hideEdit="True" isVisible="False">
     <label>Kafka Connect - Entity health view</label>    <label>Kafka Connect - Entity health view</label>
 
+    <search id="main_populate">
+        <query>| savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect | search [
+| makeresults
+| eval kafka_connect="$entity_title$"
+| rex field=kafka_connect "^(?&lt;env&gt;[^\:]*)\:(?&lt;label&gt;[^\:]*)\:(?&lt;kafka_connect_shortname&gt;[^\:]*)"
+| fields env label jolokia_agent_url ]</query>
+        <earliest>$earliest$</earliest>
+        <latest>$latest$</latest>
+    </search>
+
     <search id="connect_state_summary">
-        <query>| mstats latest(_value) as value WHERE `telegraf_kafka_index` metric_name="kafka_connect.worker.task-startup-failure-total" OR metric_name="kafka_connect.worker.connector-startup-failure-total" OR metric_name="kafka_connect.worker.time-since-last-rebalance-ms" OR metric_name="kafka_connect.worker.task-count" $jolokia_agent_url$ by metric_name, jolokia_agent_url
+        <query>| mstats latest(_value) as value WHERE `telegraf_kafka_index` metric_name="kafka_connect.worker.task-startup-failure-total" OR metric_name="kafka_connect.worker.connector-startup-failure-total" OR metric_name="kafka_connect.worker.time-since-last-rebalance-ms" OR metric_name="kafka_connect.worker.task-count" $env$ $label$ $jolokia_agent_url$ by metric_name, jolokia_agent_url
 | eval {metric_name}=value
 | stats first(kafka_connect.*) as "*" by jolokia_agent_url
 | stats min(worker.time-since-last-rebalance-ms) as worker.time-since-last-rebalance-ms, sum(*) as "*"
@@ -22,18 +32,42 @@
                 <latestTime>now</latestTime>
             </default>
         </input>
-        <input type="multiselect" token="jolokia_agent_url" searchWhenChanged="true">
-            <label>Kafka connnect worker(s):</label>
+        <input type="text" token="entity_title" searchWhenChanged="true">
+            <label>Entity:</label>
+        </input>
+        <input type="dropdown" token="env" depends="$hidden$" searchWhenChanged="true">
+            <label>Env:</label>
             <!-- Populating Data Model Search -->
-            <search>
-                <query>| savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect</query>
-                <earliest>$earliest$</earliest>
-                <latest>$latest$</latest>
+            <search base="main_populate">
+                <query>dedup env | sort 0 env</query>
             </search>
-            <valuePrefix>jolokia_agent_url="</valuePrefix>
-            <valueSuffix>"</valueSuffix>
-            <delimiter> OR </delimiter>
-            <choice value="*">ANY</choice>
+            <prefix>env="</prefix>
+            <suffix>"</suffix>
+            <selectFirstChoice>true</selectFirstChoice>
+            <fieldForLabel>env</fieldForLabel>
+            <fieldForValue>env</fieldForValue>
+        </input>
+        <input type="dropdown" token="label" depends="$hidden$" searchWhenChanged="true">
+            <label>Label:</label>
+            <!-- Populating Data Model Search -->
+            <search base="main_populate">
+                <query>search $env$ | dedup label | sort 0 label</query>
+            </search>
+            <prefix>label="</prefix>
+            <suffix>"</suffix>
+            <selectFirstChoice>true</selectFirstChoice>
+            <fieldForLabel>label</fieldForLabel>
+            <fieldForValue>label</fieldForValue>
+        </input>
+        <input type="dropdown" token="jolokia_agent_url" depends="$hidden$" searchWhenChanged="true">
+            <label>Node(s):</label>
+            <!-- Populating Data Model Search -->
+            <search base="main_populate">
+                <query>search $env$ $label$ | dedup jolokia_agent_url | sort 0 jolokia_agent_url</query>
+            </search>
+            <prefix>jolokia_agent_url="</prefix>
+            <suffix>"</suffix>
+            <selectFirstChoice>true</selectFirstChoice>
             <fieldForLabel>jolokia_agent_url</fieldForLabel>
             <fieldForValue>jolokia_agent_url</fieldForValue>
         </input>
@@ -170,7 +204,7 @@
             <title>The number of tasks run in this worker</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.task-count" $jolokia_agent_url$ by jolokia_agent_url span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.task-count" $env$ $label$ $jolokia_agent_url$ by jolokia_agent_url span=10s
 | timechart limit=20 useother=f`telegraf_kafka_span` avg(_value) as value by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -189,7 +223,7 @@
             <title>Whether this worker is currently rebalancing</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.rebalancing" $jolokia_agent_url$ by jolokia_agent_url span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.rebalancing" $env$ $label$ $jolokia_agent_url$ by jolokia_agent_url span=10s
 | timechart limit=20 useother=f `telegraf_kafka_span` avg(_value) as value by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -211,7 +245,7 @@
             <title>The average percentage of this worker's connectors starts that failed</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.connector-startup-failure-percentage" $jolokia_agent_url$ by jolokia_agent_url span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.connector-startup-failure-percentage" $env$ $label$ $jolokia_agent_url$ by jolokia_agent_url span=10s
 | timechart limit=20 useother=f `telegraf_kafka_span` avg(_value) as value by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -230,7 +264,7 @@
             <title>The average percentage of this worker's tasks starts that failed</title>
             <chart>
                 <search depends="$chart1$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.task-startup-failure-percentage" $jolokia_agent_url$ by jolokia_agent_url span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.worker.task-startup-failure-percentage" $env$ $label$ $jolokia_agent_url$ by jolokia_agent_url span=10s
 | timechart limit=20 useother=f `telegraf_kafka_span` avg(_value) as value by jolokia_agent_url</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -252,7 +286,7 @@
             <title>The fraction of time this task has spent in the running state</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.running-ratio" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.running-ratio" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -271,7 +305,7 @@
             <title>The average size of the batches processed by the connector</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.batch-size-avg" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.batch-size-avg" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -290,7 +324,7 @@
             <title>The maximum size of the batches processed by the connector</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.batch-size-max" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.batch-size-max" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -312,7 +346,7 @@
             <title>The average percentage of this task's offset commit attempts that failed</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.offset-commit-success-percentage" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.offset-commit-success-percentage" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -331,7 +365,7 @@
             <title>The average time in milliseconds taken by this task to commit offsets</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.offset-commit-avg-time-ms" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.offset-commit-avg-time-ms" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -350,7 +384,7 @@
             <title>The maximum time in milliseconds taken by this task to commit offsets</title>
             <chart>
                 <search depends="$chart2$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.offset-commit-max-time-ms" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.connector-task.offset-commit-max-time-ms" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -372,7 +406,7 @@
             <title>Avg/sec records produced/polled (before transformation)</title>
             <chart>
                 <search depends="$chart3$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-poll-rate" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-poll-rate" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -391,7 +425,7 @@
             <title>Avg time/ms taken to poll for a batch of source records</title>
             <chart>
                 <search depends="$chart3$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-avg-time-ms" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-avg-time-ms" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -410,7 +444,7 @@
             <title>Max time/ms taken by this task to poll for a batch of source records</title>
             <chart>
                 <search depends="$chart3$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-max-time-ms" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.poll-batch-max-time-ms" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -432,7 +466,7 @@
             <title>Avg/sec no records output from transformations written to Kafka, after transformations</title>
             <chart>
                 <search depends="$chart3$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-write-rate" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-write-rate" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -451,7 +485,7 @@
             <title>Avg no records that have been produced but not yet completely written to Kafka</title>
             <chart>
                 <search depends="$chart3$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-avg" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-avg" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -470,7 +504,7 @@
             <title>Max no records that have been produced but not yet completely written to Kafka</title>
             <chart>
                 <search depends="$chart3$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-max" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.source-task.source-record-active-count-max" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -492,7 +526,7 @@
             <title>Number of topic partitions assigned to this task</title>
             <chart>
                 <search depends="$chart4$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.partition-count" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.partition-count" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -511,7 +545,7 @@
             <title>Avg/sec records read from Kafka, before transformations are applied</title>
             <chart>
                 <search depends="$chart4$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.sink-record-read-rate" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.sink-record-read-rate" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -530,7 +564,7 @@
             <title>Avg/sec records output from transformations and sent/put, after transformations are applied</title>
             <chart>
                 <search depends="$chart4$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.sink-record-send-rate" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.sink-record-send-rate" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -552,7 +586,7 @@
             <title>Average time taken by this task to put a batch of sinks records</title>
             <chart>
                 <search depends="$chart4$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.put-batch-avg-time-ms" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.put-batch-avg-time-ms" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -571,7 +605,7 @@
             <title>Avg/sec number of offset commit completions completed successfully</title>
             <chart>
                 <search depends="$chart4$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.offset-commit-completion-rate" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.offset-commit-completion-rate" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -590,7 +624,7 @@
             <title>Avg/sec number of offset commit completions received too late and skipped/ignored</title>
             <chart>
                 <search depends="$chart4$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.offset-commit-skip-rate" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.sink-task.offset-commit-skip-rate" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -612,7 +646,7 @@
             <title>The number of errors that were logged</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-errors-logged" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-errors-logged" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -631,7 +665,7 @@
             <title>The number of operations retried</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-retries" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-retries" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -650,7 +684,7 @@
             <title>The number of records skipped due to errors</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-records-skipped" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-records-skipped" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -672,7 +706,7 @@
             <title>The number of record processing failures in this task</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-record-failures" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-record-failures" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -691,7 +725,7 @@
             <title>The number of record processing errors in this task</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-record-errors" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.total-record-errors" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -710,7 +744,7 @@
             <title>The number of attempted writes to the dead letter queue</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.deadletterqueue-produce-requests" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.deadletterqueue-produce-requests" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -732,7 +766,7 @@
             <title>The number of failed writes to the dead letter queue</title>
             <chart>
                 <search depends="$chart5$">
-                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.deadletterqueue-produce-failures" $jolokia_agent_url$ by connector span=10s
+                    <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="kafka_connect.error-task.deadletterqueue-produce-failures" $env$ $label$ $jolokia_agent_url$ by connector span=10s
 | timechart `telegraf_kafka_span` avg(_value) as avg useother=f limit=20 by connector</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -757,7 +791,7 @@
             <title>Kafka Connect log events by log_level</title>
             <chart>
                 <search depends="$chart6$">
-                    <query>eventtype="kafka_connect" log_level=* [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect | search $jolokia_agent_url$ | table kafka_connect | rename kafka_connect as host ]
+                    <query>eventtype="kafka_connect" log_level=* [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect | search $env$ $label$ $jolokia_agent_url$ | table kafka_connect_shortname | rename kafka_connect_shortname as host ]
 | timechart useother=f limit=0 minspan=1m count by log_level</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
@@ -793,7 +827,7 @@
             </input>
             <event>
                 <search depends="$chart6$">
-                    <query>eventtype="kafka_connect" $log_search_tk$ $log_sourcetype_tk$ [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect | search $jolokia_agent_url$ | table kafka_connect | rename kafka_connect as host ]</query>
+                    <query>eventtype="kafka_connect" $log_search_tk$ $log_sourcetype_tk$ [ | savedsearch DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect | search $env$ $label$ $jolokia_agent_url$ | table kafka_connect_shortname | rename kafka_connect_shortname as host ]</query>
                     <earliest>$earliest$</earliest>
                     <latest>$latest$</latest>
                     <sampleRatio>1</sampleRatio>

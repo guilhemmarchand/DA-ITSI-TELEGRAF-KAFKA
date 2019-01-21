@@ -11,6 +11,8 @@ tar -xzf ${app}_*.spl
 PWD=`pwd`
 version=`grep 'version =' ${app}/default/app.conf | awk '{print $3}' | sed 's/\.//g'`
 
+rm -rf ${app}/local ${app}/lookups/lookup_file_backups ${app}/.idea
+
 tar -czf ${app}_${version}.tgz ${app} --exclude=${app}/local --exclude=${app}/metadata/local.meta --exclude=${app}/lookups/lookup_file_backups --exclude=${app}/.idea
 echo "Wrote: ${app}_${version}.tgz"
 
