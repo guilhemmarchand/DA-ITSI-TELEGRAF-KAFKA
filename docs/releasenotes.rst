@@ -1,6 +1,12 @@
 Release notes
 #############
 
+Version 1.1.0
+=============
+- feature: Support for multi-environments / multi-dc deployments with metrics tagging
+- feature: Global rewrite of entities management and identification
+- fix: Moved from second interval to cron schedule for entities import to avoid dup entities at addon installation time
+
 Version 1.0.6
 =============
 - feature: Support for Confluent ksql-server
