@@ -1,4 +1,4 @@
-Copyright 2018 Guilhem Marchand
+Copyright 2018-2019 Guilhem Marchand
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ The best components are leveraged together to bring the power of a solution with
 
 ![screen1](./docs/img/main1.png)
 
-The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Kafka topics, Kafka Connect and end to end monitoring with the LinkedIn Kafka monitor.
+The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Kafka topics, Kafka Connect, Confluent components (kafka-rest, schema-registry, ksql-server) and end to end monitoring with the LinkedIn Kafka monitor.
 
 **The documentation is available on-line at:** https://da-itsi-telegraf-kafka.readthedocs.io
 
@@ -39,5 +39,3 @@ The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Ka
 - Builtin entities discovery for Zookeeper servers, Kafka brokers, Kafka connect nodes, Kafka connect source and sink tasks, Kafka-monitor, Kafka topics
 - Services templates and KPI base searches for Zookeeper, Kafka brokers, Kafka connect and source/sink tasks, Kafka LinkedIn monitor, Kafka topics
 - Rich entity health views to manage Operating System metrics ingested in the Splunk metric store
-
-![screen1](./docs/img/draw.io/overview_diagram.png)
