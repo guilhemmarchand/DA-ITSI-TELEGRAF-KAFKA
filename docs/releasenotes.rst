@@ -3,9 +3,22 @@ Release notes
 
 Version 1.1.0
 =============
+
+**CAUTION: Breaking changes and major release, telegraf modification is required to provide global tags for env and label dimensions!**
+
+https://da-itsi-telegraf-kafka.readthedocs.io/en/latest/kafka_monitoring.html#telegraf-installation-and-configuration
+
+**Upgrade path:**
+
+- Upgrade telegraf configuration to provide the env and label tags
+- Upgrade the module, manage entities and rebuild your services
+
+**release notes:**
+
 - feature: Support for multi-environments / multi-dc deployments with metrics tagging
 - feature: Global rewrite of entities management and identification
 - fix: Moved from second interval to cron schedule for entities import to avoid dup entities at addon installation time
+- fix: Various fixes and improvements
 
 Version 1.0.6
 =============
