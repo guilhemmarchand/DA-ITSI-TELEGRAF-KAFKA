@@ -12,6 +12,10 @@ The ITSI module for Telegraf Kafka monitoring provides smart insight monitoring 
    :alt: glass_table.png
    :align: center
 
+.. image:: img/service_analyser.png
+   :alt: service_analyser.png
+   :align: center
+
 .. image:: img/main1.png
    :alt: main1.png
    :align: center
