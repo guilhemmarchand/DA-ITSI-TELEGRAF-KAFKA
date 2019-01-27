@@ -15,6 +15,7 @@ https://da-itsi-telegraf-kafka.readthedocs.io/en/latest/kafka_monitoring.html#te
 
 **release notes:**
 
+- fix: duplicated KPI id for topic/brokers under replicated replication leads in KPI rendering issues
 - fix: entity rendering issue with Kafka SLA monitor health view
 
 Version 1.1.0
