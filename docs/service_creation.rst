@@ -17,6 +17,8 @@ Services creation
 
 * **Kafka source task monitoring**
 
+* **Kafka Consumers lag monitoring**
+
 * **Confluent schema-registry monitoring**
 
 * **Confluent Confluent ksql-server monitoring**
@@ -46,7 +48,7 @@ Monitoring Zookeeper servers
    :alt: service_zookeeper_pic2.png
    :align: center
 
-Monitoring Kafka brokers
+Monitoring Kafka Brokers
 ========================
 
 **To monitor your Zookeeper servers, create a new service using the "Kafka brokers monitoring" template service and select the proper filters for your entities:**
@@ -61,7 +63,7 @@ Monitoring Kafka brokers
    :alt: service_kafka_broker_pic2.png
    :align: center
 
-Monitoring Kafka topics
+Monitoring Kafka Topics
 =======================
 
 **To monitor one or more Kafka topics, create a new service using the "Kafka topic monitoring" template service and select the proper filters for your entities corresponding to your topics:**
@@ -115,6 +117,21 @@ Monitoring Kafka Connect Source taks
 
 .. image:: img/service_kafka_source_task_pic2.png
    :alt: service_kafka_source_task_pic2.png
+   :align: center
+
+Monitoring Kafka Consumers
+==========================
+
+**To monitor one or more Kafka Consumers, create a new service using the "Kafka Consumers lag monitoring" template service and select the proper filters for your entities corresponding to your topics:**
+
+* Configure / Service / Create new service / Kafka lag monitoring
+
+.. image:: img/service_kafka_consumers_pic1.png
+   :alt: service_kafka_consumers_pic1.png
+   :align: center
+
+.. image:: img/service_kafka_consumers_pic2.png
+   :alt: service_kafka_consumers_pic2.png
    :align: center
 
 Monitoring Confluent schema-registry

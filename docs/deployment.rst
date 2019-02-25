@@ -32,7 +32,7 @@ The deployment of the ITSI module for Telegraf Kafka is straight forward.
 Upgrades
 ========
 
-Upgrading the ITSI module is pretty much the same operation, use one of the techniques that matches your conditions / requirements.
+Upgrading the ITSI module is pretty much the same operation than the initial deployment.
 
 Upgrades of the components
 ==========================

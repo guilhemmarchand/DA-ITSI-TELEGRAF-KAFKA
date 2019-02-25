@@ -131,6 +131,25 @@ Kafka connect source task dashboard view
    :alt: dashboard_kafka_connect_source_pic3.png
    :align: center
 
+Kafka consumers lag monitoring dashboard view (Burrow)
+######################################################
+
+.. image:: img/dashboard_kafka_consumers_pic1.png
+   :alt: dashboard_kafka_consumers_pic1.png
+   :align: center
+
+.. image:: img/dashboard_kafka_consumers_pic2.png
+   :alt: dashboard_kafka_consumers_pic2.png
+   :align: center
+
+.. image:: img/dashboard_kafka_consumers_pic3.png
+   :alt: dashboard_kafka_consumers_pic3.png
+   :align: center
+
+.. image:: img/dashboard_kafka_consumers_pic4.png
+   :alt: dashboard_kafka_consumers_pic4.png
+   :align: center
+
 Confluent schema-registry dashboard view
 ########################################
 

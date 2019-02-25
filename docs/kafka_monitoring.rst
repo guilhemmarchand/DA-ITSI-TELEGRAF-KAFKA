@@ -953,6 +953,105 @@ Full telegraf.conf example
 
     | mcatalog values(metric_name) values(_dims) where index=* metric_name=kafka_kafka_kafka-rest.*
 
+Burrow Lag Consumers
+====================
+
+**As from their authors, Burrow is a monitoring companion for Apache Kafka that provides consumer lag checking as a service without the need for specifying thresholds.**
+
+See: https://github.com/linkedin/Burrow
+
+*Burrow workflow diagram:*
+
+.. image:: img/burrow_diagram.png
+   :alt: burrow_diagram.png
+   :align: center
+
+Telegraf has a native input for Burrow which polls consumers, topics and partitions lag metrics and statuses over http, use the following telegraf minimal configuration:
+
+See: https://github.com/influxdata/telegraf/tree/master/plugins/inputs/burrow
+
+::
+
+    [global_tags]
+      # the env tag is used by the application for multi-environments management
+      env = "my_env"
+      # the label tag is an optional tag used by the application that you can use as additional label for the services or infrastructure
+      label = "my_env_label"
+
+    [agent]
+      interval = "10s"
+      flush_interval = "10s"
+      hostname = "$HOSTNAME"
+
+    # outputs
+    [[outputs.http]]
+       url = "https://splunk:8088/services/collector"
+       insecure_skip_verify = true
+       data_format = "splunkmetric"
+        ## Provides time, index, source overrides for the HEC
+       splunkmetric_hec_routing = true
+        ## Additional HTTP headers
+        [outputs.http.headers]
+       # Should be set manually to "application/json" for json data_format
+          Content-Type = "application/json"
+          Authorization = "Splunk 205d43f1-2a31-4e60-a8b3-327eda49944a"
+          X-Splunk-Request-Channel = "205d43f1-2a31-4e60-a8b3-327eda49944a"
+
+    # Burrow
+
+    [[inputs.burrow]]
+      ## Burrow API endpoints in format "schema://host:port".
+      ## Default is "http://localhost:8000".
+      servers = ["http://dockerhost:9001"]
+
+      ## Override Burrow API prefix.
+      ## Useful when Burrow is behind reverse-proxy.
+      # api_prefix = "/v3/kafka"
+
+      ## Maximum time to receive response.
+      # response_timeout = "5s"
+
+      ## Limit per-server concurrent connections.
+      ## Useful in case of large number of topics or consumer groups.
+      # concurrent_connections = 20
+
+      ## Filter clusters, default is no filtering.
+      ## Values can be specified as glob patterns.
+      # clusters_include = []
+      # clusters_exclude = []
+
+      ## Filter consumer groups, default is no filtering.
+      ## Values can be specified as glob patterns.
+      # groups_include = []
+      # groups_exclude = []
+
+      ## Filter topics, default is no filtering.
+      ## Values can be specified as glob patterns.
+      # topics_include = []
+      # topics_exclude = []
+
+      ## Credentials for basic HTTP authentication.
+      # username = ""
+      # password = ""
+
+      ## Optional SSL config
+      # ssl_ca = "/etc/telegraf/ca.pem"
+      # ssl_cert = "/etc/telegraf/cert.pem"
+      # ssl_key = "/etc/telegraf/key.pem"
+      # insecure_skip_verify = false
+
+**Visualization of metrics within the Splunk metrics workspace application:**
+
+.. image:: img/burrow_metrics_workspace.png
+   :alt: burrow_metrics_workspace.png
+   :align: center
+
+**Using mcatalog search command to verify data availability:**
+
+::
+
+    | mcatalog values(metric_name) values(_dims) where index=* metric_name=burrow_*
+
 Operating System level metrics
 ==============================
 
@@ -999,5 +1098,3 @@ Telegraf docker monitoring
 Telegraf has very powerful inputs for Docker and is natively compatible with a container orchestrator such as Kubernetes.
 
 Specially with Kubernetes, it is very easy to run a Telegraf container as a daemonset in Kubernetes and retrieve all the performance metrics of the containers.
-
-Watch out for an upcoming ITSI Module for Docker and ITSI Module for Kubernetes !

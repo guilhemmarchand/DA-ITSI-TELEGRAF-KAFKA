@@ -10,29 +10,31 @@ Entities automatic import
 
 **In a nutshell, the following reports are automatically scheduled:**
 
-+-------------------------------+-----------------------------------------------------------------+
-| Purpose                       | Report                                                          |
-+===============================+=================================================================+
-| Zookeeper servers detection   | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper               |
-+-------------------------------+-----------------------------------------------------------------+
-| Kafka brokers detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_brokers           |
-+-------------------------------+-----------------------------------------------------------------+
-| Kafka topics detection        | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_topics            |
-+-------------------------------+-----------------------------------------------------------------+
-| Kafka connect detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect           |
-+-------------------------------+-----------------------------------------------------------------+
-| Kafka connect tasks detection | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect_tasks     |
-+-------------------------------+-----------------------------------------------------------------+
-| Kafka monitors detection      | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_linkedin_kafka_monitors |
-+-------------------------------+-----------------------------------------------------------------+
-| Confluent schema-registry     | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_schema-registry   |
-+-------------------------------+-----------------------------------------------------------------+
-| Confluent ksql-server         | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka-ksql-server       |
-+-------------------------------+-----------------------------------------------------------------+
-| Confluent kafka-rest          | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka-kafka-rest        |
-+-------------------------------+-----------------------------------------------------------------+
++-------------------------------+----------------------------------------------------------------------+
+| Purpose                       | Report                                                               |
++===============================+======================================================================+
+| Zookeeper servers detection   | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_zookeeper                    |
++-------------------------------+----------------------------------------------------------------------+
+| Kafka brokers detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_brokers                |
++-------------------------------+----------------------------------------------------------------------+
+| Kafka topics detection        | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_topics                 |
++-------------------------------+----------------------------------------------------------------------+
+| Kafka connect detection       | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect                |
++-------------------------------+----------------------------------------------------------------------+
+| Kafka connect tasks detection | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_connect_tasks          |
++-------------------------------+----------------------------------------------------------------------+
+| Kafka monitors detection      | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_linkedin_kafka_monitors      |
++-------------------------------+----------------------------------------------------------------------+
+| Kafka Consumers detection     | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_burrow_group_consumers |
++-------------------------------+----------------------------------------------------------------------+
+| Confluent schema-registry     | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka_schema-registry        |
++-------------------------------+----------------------------------------------------------------------+
+| Confluent ksql-server         | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka-ksql-server            |
++-------------------------------+----------------------------------------------------------------------+
+| Confluent kafka-rest          | DA-ITSI-TELEGRAF-KAFKA-Inventory_Search_kafka-kafka-rest             |
++-------------------------------+----------------------------------------------------------------------+
 
-**When entities are discovered, entities will be added automatically using the itsi_role information field, with specific per technology aliases fields**
+**When entities are discovered, entities will be added automatically using the itsi_role information field, in addition with several other info fields depending on the components.**
 
 Manual entities import
 ######################
@@ -76,6 +78,13 @@ Kafka connect tasks detection
 
 .. image:: img/entities_kafka_connect_tasks_detection.png
    :alt: entities_kafka_connect_tasks_detection.png
+   :align: center
+
+Kafka consumers detection (Burrow)
+----------------------------------
+
+.. image:: img/entities_kafka_consumers_detection.png
+   :alt: entities_kafka_consumers_detection.png
    :align: center
 
 Confluent schema-registry nodes detection

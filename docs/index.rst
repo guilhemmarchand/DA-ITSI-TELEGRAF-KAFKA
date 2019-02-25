@@ -29,6 +29,9 @@ The ITSI provides builtin and native monitoring for Apache Kafka components, as 
 * Confluent ksql-server
 * Confluent kafka-rest
 * Kafka SLA and end to end monitoring with the LinkedIn Kafka monitor
+* Kafka Consumers lag monitoring with Burrow
+
+Fully multi-tenant compatible, the ITSI module can manage different environments or data-centers using tags at metrics low level.
 
 **It is recommended to read the unified guide for Kafka and Confluent monitoring first:**
 

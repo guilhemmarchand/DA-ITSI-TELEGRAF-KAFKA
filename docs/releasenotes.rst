@@ -1,6 +1,16 @@
 Release notes
 #############
 
+Version 1.1.2
+=============
+
+**Burrow integration: Kafka Consumer Lag monitoring**
+
+- feature: New KPI basesearch and Service Template for Kafka Consumers Lag Monitoring with Burrow
+- feature: New entity view for Kafka Consumers Lag monitoring
+
+The Burrow integration provides advanced threshold less lag monitoring for Kafka Consumers, such as Kafka Connect connectors and Kafka Streams.
+
 Version 1.1.1
 =============
 
