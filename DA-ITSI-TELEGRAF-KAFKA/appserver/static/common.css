@@ -21,3 +21,16 @@
 .btn-pill {
   max-width: 600px !important;
 }
+
+/* Home page */
+.dashseparator {
+	text-align: center;
+	border: 3px dashed #ccc;
+}
+
+/* box class */
+.box {
+   display: inline-flex;;
+   align-items: center;
+   margin-top: 5px;
+}
