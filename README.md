@@ -1,3 +1,9 @@
+# ITSI modufle for Kafka Smart Monitoring for Splunk
+
+| branch | build status |
+| ---    | ---          |
+| master | [![master status](https://circleci.com/gh/guilhemmarchand/DA-ITSI-TELEGRAF-KAFKA/tree/master.svg?style=svg)](https://circleci.com/gh/guilhemmarchand/DA-ITSI-TELEGRAF-KAFKA/tree/master)
+
 Copyright 2018-2019 Guilhem Marchand
 
 Licensed under the Apache License, Version 2.0 (the "License");
