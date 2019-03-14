@@ -4,6 +4,7 @@
 | ---    | ---          |
 | master | [![master status](https://circleci.com/gh/guilhemmarchand/DA-ITSI-TELEGRAF-KAFKA/tree/master.svg?style=svg)](https://circleci.com/gh/guilhemmarchand/DA-ITSI-TELEGRAF-KAFKA/tree/master)
 
+
 Copyright 2018-2019 Guilhem Marchand
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,20 +31,27 @@ The best components are leveraged together to bring the power of a solution with
 
 ![screen1](./docs/img/main1.png)
 
-The ITSI provides builtin and native monitoring for Zookeeper, Kafka brokers, Kafka topics, Kafka Connect, Confluent components (kafka-rest, schema-registry, ksql-server) and end to end monitoring with the LinkedIn Kafka monitor.
+**The ITSI module for Telegraf Kafka monitoring provides smart insight monitoring for Apache Kafka monitoring, on top of Splunk and ITSI.**
 
-**The documentation is available on-line at:** https://da-itsi-telegraf-kafka.readthedocs.io
+On-line documentation: https://da-itsi-telegraf-kafka.readthedocs.io
 
-**The ITSI module for Apache Kafka end to end monitoring leverages the best components to provide a key layer monitoring for your Kafka infrastructure :**
+**The ITSI module provides builtin and native monitoring for Apache Kafka components, as well as the Confluent stack components:**
 
-- Telegraf from Influxdata (https://github.com/influxdata/telegraf)
-- Jolokia for the remote JMX collection over http (https://jolokia.org)
-- Telegraf Jolokia2 input plugin (https://github.com/influxdata/telegraf/tree/master/plugins/inputs/jolokia2)
-- Telegraf Zookeeper input plugin (https://github.com/influxdata/telegraf/tree/master/plugins/inputs/zookeeper)
-- LinkedIn Kafka monitor to provide end to end monitoring (https://github.com/linkedin/kafka-monitor)
+- Zookeeper
+- Apache Kafka Brokers
+- Apache Kafka Connect
+- Confluent schema-registry
+- Confluent ksql-server
+- Confluent kafka-rest
+- Kafka SLA and end to end monitoring with the Linkedin Kafka monitor
+- Kafka Consumers lag monitoring with Burrow (Kafka Connect connectors, Kafka Streams, etc.)
 
-**The ITSI module provides a native and builtin integration with Splunk and ITSI:**
+**Native ITSI integration:**
 
-- Builtin entities discovery for Zookeeper servers, Kafka brokers, Kafka connect nodes, Kafka connect source and sink tasks, Kafka-monitor, Kafka topics
-- Services templates and KPI base searches for Zookeeper, Kafka brokers, Kafka connect and source/sink tasks, Kafka LinkedIn monitor, Kafka topics
-- Rich entity health views to manage Operating System metrics ingested in the Splunk metric store
+- Builtin entities discovery for all components
+- Services templates and KPI base searches
+- Rich entity health views for each component of your Kafka environment
+
+Multi-tenancy is fully supported by the application, relying on metrics tags support.
+
+READ THE UNIFIED GUIDE FOR KAFKA MONITORING: https://splunk-guide-for-kafka-monitoring.readthedocs.io
