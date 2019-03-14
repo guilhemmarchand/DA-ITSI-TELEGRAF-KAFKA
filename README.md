@@ -1,4 +1,4 @@
-# ITSI modufle for Kafka Smart Monitoring for Splunk
+# ITSI module for Kafka Smart Monitoring for Splunk
 
 | branch | build status |
 | ---    | ---          |
