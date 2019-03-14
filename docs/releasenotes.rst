@@ -1,6 +1,12 @@
 Release notes
 #############
 
+Version 1.1.5
+=============
+
+- fix: Static index reference in Kafka Brokers entities discovery report
+- feature: Drilldown to single forms for Offline and Under-replicated partitions in Overview and Kafka Brokers entities views
+
 Version 1.1.4
 =============
 
