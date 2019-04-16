@@ -80,12 +80,13 @@
                 <search base="server_activity_summary">
                     <query>fields avg_latency</query>
                 </search>
+                <option name="numberPrecision">0.00</option>
                 <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
                 <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
                 <option name="rangeValues">[10]</option>
                 <option name="refresh.display">progressbar</option>
-                <option name="underLabel">AVERAGE LATENCY</option>
+                <option name="underLabel">AVERAGE LATENCY (millisecond)</option>
                 <option name="useColors">1</option>
             </single>
         </panel>
@@ -166,7 +167,7 @@
     <row depends="$chart1$">
         <panel>
             <chart>
-                <title>Average latency</title>
+                <title>Average latency (millisecond)</title>
                 <search depends="$chart1$">
                     <query>| mstats avg(_value) prestats=true where `telegraf_kafka_index` metric_name="zookeeper.avg_latency" $env$ $label$ $server$ by server span=1s
 | timechart `telegraf_kafka_span` avg(_value) as "Avg" by server</query>
