@@ -3,6 +3,9 @@
 
 app="DA-ITSI-TELEGRAF-KAFKA"
 
+rm -f *.spl
+rm -f *.tgz
+
 if [ -d $app ]; then rm -rf $app; fi
 ./build_itsi.sh
 

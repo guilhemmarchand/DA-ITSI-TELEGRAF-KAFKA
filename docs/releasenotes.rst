@@ -1,6 +1,11 @@
 Release notes
 #############
 
+Version 1.1.6
+=============
+
+- fix: Expose units for Zookeeper latency metrics in entity view
+
 Version 1.1.5
 =============
 
