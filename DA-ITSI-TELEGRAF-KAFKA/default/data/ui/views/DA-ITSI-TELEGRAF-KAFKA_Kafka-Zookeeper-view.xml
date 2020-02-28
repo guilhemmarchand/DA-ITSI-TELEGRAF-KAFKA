@@ -6,7 +6,7 @@
 | makeresults
 | eval zookeeper="$entity_title$"
 | rex field=zookeeper "^(?&lt;env&gt;[^\:]*)\:(?&lt;label&gt;[^\:]*)\:(?&lt;zookeeper_node&gt;[^\:]*)"
-| fields env label zookeeper_node ]</query>
+| fields env label zookeeper_node jolokia_agent_url ]</query>
         <earliest>$earliest$</earliest>
         <latest>$latest$</latest>
     </search>
@@ -63,22 +63,24 @@
             <label>Zookeeper server(s):</label>
             <!-- Populating Data Model Search -->
             <search base="main_populate">
-                <query>search $env$ $label$ | dedup zookeeper | sort 0 zookeeper</query>
+                <query>search $env$ $label$ | dedup jolokia_agent_url | sort 0 jolokia_agent_url</query>
             </search>
-            <prefix>zookeeper="</prefix>
+            <prefix>jolokia_agent_url="</prefix>
             <suffix>"</suffix>
             <selectFirstChoice>true</selectFirstChoice>
             <fieldForLabel>zookeeper_node</fieldForLabel>
-            <fieldForValue>zookeeper_node</fieldForValue>
+            <fieldForValue>jolokia_agent_url</fieldForValue>
         </input>
     </fieldset>
 
     <row>
         <panel>
             <single>
+		<search base="server_activity_summary">
                     <query>search metric_name="zk_*.AvgRequestLatency"
 | where metric>=0
 | stats avg(metric) as latency</query>
+                </search>
                 <option name="numberPrecision">0.00</option>
                 <option name="colorMode">block</option>
                 <option name="drilldown">none</option>
